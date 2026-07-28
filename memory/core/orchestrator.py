@@ -731,7 +731,11 @@ class MemoryOrchestrator:
         
         # Generate embedding for session summary
         summary_text = analysis.get("session_summary", "Session completed.")
-        summary_vector = self._embedding_provider.get_embedding(summary_text)
+        if summary_text and summary_text.strip():
+            summary_vector = self._embedding_provider.get_embedding(summary_text)
+        else:
+            # Empty summary - use a zero vector fallback
+            summary_vector = [0.0] * self._embedding_provider.dimensions if hasattr(self._embedding_provider, 'dimensions') else [0.0] * 1536
         
         # Use tracked start_time (or fallback to now if not tracked)
         start_time = self._session_start_time or self._utcnow_iso()
