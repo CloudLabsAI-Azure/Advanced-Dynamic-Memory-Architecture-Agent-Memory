@@ -77,7 +77,7 @@ class AgentMemoryConfig:
     # Model settings (configured via env vars if not specified)
     reasoning_model: Optional[str] = None  # AZURE_OPENAI_REASONING_MODEL
     processing_model: Optional[str] = None  # AZURE_OPENAI_PROCESSING_MODEL
-    embedding_model: str = "text-embedding-ada-002"  # Most common Azure embedding model
+    embedding_model: str = os.getenv("AZURE_OPENAI_EMB_DEPLOYMENT", "text-embedding-3-large")
     embedding_dimensions: int = 1536  # 1536 for ada-002, 3072 for text-embedding-3-large
     
     # Database settings (for CosmosDB)
