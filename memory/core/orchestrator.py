@@ -52,9 +52,9 @@ class OrchestratorConfig:
     max_conflict_candidates: int = 5
     
     # Model settings
-    REASONING_MODEL: str = "gpt-4o"
-    PROCESSING_MODEL: str = "gpt-4o-mini"
-    EMBEDDING_MODEL: str = "text-embedding-ada-002"
+    REASONING_MODEL: str = os.getenv("AZURE_OPENAI_REASONING_MODEL", "gpt-5.1")
+    PROCESSING_MODEL: str = os.getenv("AZURE_OPENAI_PROCESSING_MODEL", "gpt-5.1")
+    EMBEDDING_MODEL: str = os.getenv("AZURE_OPENAI_EMB_DEPLOYMENT", "text-embedding-3-large")
     EMBEDDING_DIMENSIONS: int = 1536
     
     # Auto-enrichment (LLM-based semantic detection)
