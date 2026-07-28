@@ -58,10 +58,6 @@ htmlcov/
 .tox/
 .hypothesis/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
-
 # Agent Framework folders (exclude from repo)
 agent-framework/
 
