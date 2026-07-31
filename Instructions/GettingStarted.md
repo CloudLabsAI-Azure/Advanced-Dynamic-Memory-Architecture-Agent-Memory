@@ -1,6 +1,6 @@
 # Advanced Dynamic Memory Architecture — Agent Memory
 
-### Lab Duration: 8 Hours
+### Overall Estimated Duration: 8 Hours
 
 ## 📘 Lab Scenario
 
@@ -8,50 +8,81 @@ Contoso AI Solutions is building the next generation of its customer-facing inte
 
 To solve this, the engineering team has been tasked with integrating **Agent Memory** — a persistent, searchable memory layer that allows AI agents to remember users across sessions, extract long-term insights from conversations, and deliver contextually aware responses from the very first message of every new conversation.
 
-As an AI Engineer at Contoso, your role is to build and validate this memory-enabled agent platform. You will work with the **Agent Memory** framework built on Azure OpenAI, configure local and cloud-backed persistence backends, integrate memory into the Microsoft Agent Framework, and ultimately build and deploy a production-ready memory-enabled agent for a real-world scenario — demonstrating that Contoso's assistants can now remember every user, forever.
+As an **AI Engineer at Contoso**, your role is to build and validate this memory-enabled agent platform. You will work with the Agent Memory framework built on Azure OpenAI, configure local and cloud-backed persistence backends, integrate memory into the Microsoft Agent Framework, and ultimately build and deploy a production-ready memory-enabled agent for a real-world scenario.
 
-## 📖 Lab overview
-The **Advanced Dynamic Memory Architecture — Agent Memory** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations.
+By the end of this lab, you will demonstrate that Contoso's assistants can now remember every user — across sessions, across weeks, and across the full history of every relationship — delivering the kind of personalised, contextually aware experience that turns a generic chatbot into a trusted assistant.
+
+## 📖 Lab Overview
+
+The **Advanced Dynamic Memory Architecture — Agent Memory** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations. Participants will learn to integrate the Agent Memory framework with Azure OpenAI, explore multiple backend persistence options (SQLite, Cosmos DB), and build a production-ready memory-enabled agent application.
 
 The lab begins with environment setup and local memory exploration using a zero-configuration SQLite backend, giving participants a concrete understanding of how `AgentMemory` stores turns, compresses older content into summaries, and recalls facts across sessions. Participants then integrate memory into the Microsoft Agent Framework as a context provider, observing how the system automatically injects prior knowledge into every agent response without any manual retrieval code.
 
-As the lab progresses, participants move from local to cloud-scale persistence by connecting `AgentMemory` to **Azure Cosmos DB** — verifying that memory survives full application restarts and is accessible from anywhere. They explore advanced curation strategies including bounded itemized memory, which keeps the insight pool compact and relevant by scoring and pruning older facts, and compare it against free-form synthesis that resolves contradictions across sessions.
+As the lab progresses, participants move from local to cloud-scale persistence by connecting `AgentMemory` to Azure Cosmos DB — verifying that memory survives full application restarts and is accessible from anywhere. They explore advanced curation strategies including bounded itemized memory, which keeps the insight pool compact and relevant by scoring and pruning older facts, and compare it against free-form synthesis that resolves contradictions across sessions.
 
-The final technical exercises cover the **FastAPI server mode** — exposing memory as a shared HTTP service that multiple clients can talk to simultaneously — and demonstrate the entire system through a real-time Streamlit visualization dashboard. The lab concludes with a guided capstone exercise where participants build their own memory-enabled agent from scratch for a scenario of their choice.
+The final exercises bring everything together — participants expose memory as a live FastAPI service, visualize the system through a real-time Streamlit dashboard, and conclude with a capstone where they build their own memory-enabled agent for a scenario of their choice, proving end-to-end cross-session recall through an automated verification report.
 
-By completing this lab, participants will gain hands-on experience building, tuning, and deploying persistent memory for AI agents — moving from a stateless chatbot pattern to a production-grade memory system backed by Azure cloud services.
+## 🎯 Lab Objectives
 
-## 🎯 Lab Objective
+This lab is designed to provide participants with hands-on experience in building memory-enabled AI agents using the Agent Memory framework and Azure services. By completing this workshop, participants will learn to:
+
+- **Configure a persistent memory development environment:** Set up the Agent Memory project, configure Azure OpenAI credentials, and verify that the local SQLite backend stores and retrieves conversation turns correctly. Tune key memory parameters including buffer size, active turns, and synthesis frequency to observe how each affects recall behavior.
+
+- **Integrate Agent Memory with Microsoft Agent Framework:** Register `AgentMemory` as a context provider inside a Microsoft Agent Framework agent using `context_providers=[memory]`, observe automatic before-run and after-run memory injection, and contrast framework-managed recall with explicit agent-driven memory tool calls.
+
+- **Deploy cloud-scale persistence with Azure Cosmos DB:** Switch the memory backend from local SQLite to Azure Cosmos DB with a single configuration change, verify that conversation turns, session summaries, and insights persist across separate process runs, and inspect stored JSON documents in the Cosmos DB Data Explorer.
+
+- **Apply advanced memory curation strategies:** Implement bounded itemized memory with a hard insight cap, observe the recency-frequency-forgetting scoring system in action, and compare this against free-form synthesis that explicitly resolves contradictions between sessions into a coherent user profile evolution narrative.
+
+- **Expose memory as a shared HTTP service:** Start the FastAPI memory server, connect multiple clients simultaneously, use the Streamlit visualization dashboard to watch memory metrics update live, and demonstrate backend portability by switching the server from SQLite to Cosmos DB via a single environment variable.
+
+- **Build your own memory-enabled agent:** Create a memory-enabled agent for a chosen scenario, configure an explicit memory retrieval tool, run two conversation sessions to verify cross-session recall, and validate that the agent successfully retrieves and uses previously stored information.
 
 ## ⚙️ Prerequisites
 
 Participants should have:
 
-- An active **Microsoft Azure subscription** with access to Azure OpenAI and Azure Cosmos DB resources pre-provisioned by the organization.
-- **Python 3.12** installed on the lab VM.
+- An active **Microsoft Azure subscription** with access to Azure OpenAI and Azure Cosmos DB resources pre-provisioned in the lab.
+
+- **Python 3.12 or later** installed on the lab VM.
+
 - **Visual Studio Code** with the Python and Jupyter extensions.
-- **Basic Python knowledge** including async/await patterns, working with environment variables, and running scripts from the command line using `uv`.
-- **Familiarity with Azure OpenAI** — knowing the difference between a deployment name and a model name, and how to find endpoint and key values in the Azure Portal.
+
+- **Basic Python knowledge** working with environment variables, and running scripts from the command line using `uv`.
+
+- **Familiarity with Azure OpenAI** — basic understanding of how Azure OpenAI works and how to navigate the Azure Portal to locate resources and credentials.
+
 - No prior Agent Memory experience required — the lab introduces all framework concepts from scratch.
 
 ## 🏗️ Architecture
 
+This architecture demonstrates an end-to-end memory-enabled AI application built using **Azure OpenAI**, **Microsoft Agent Framework**, and **Agent Memory**. The application uses Azure OpenAI to generate responses and embeddings, while Agent Memory manages conversation history, summaries, and semantic recall. During development, memory is stored locally using **SQLite**, and with a simple configuration change, the backend can be switched to **Azure Cosmos DB** for durable, cloud-scale persistence across sessions. The memory service can be exposed through a **FastAPI** server, allowing multiple clients, including the **Streamlit** dashboard, to access and visualize memory in real time. The lab concludes by building a own memory-enabled agent that demonstrates cross-session recall, long-term memory curation, and context-aware responses.
+
 ## 🖼️ Architecture Diagram
 
-### 🔍 Components explained
-- **Azure lab VM**: your working environment for the entire lab.
-- **Preloaded repository**: the source of all demos, configuration examples, tests, and infrastructure references used in the exercises.
-- **`demo/`** and **`notebooks/`** : contains the runnable learning path scripts, including local memory, framework integration, server mode, and Cosmos DB examples.
-- **`memory/` and `agent/`**: contain the core memory orchestration and agent-related implementation patterns.
-- **`server/` and `client/`**: support service-based execution and interactive access patterns.
-- **SQLite**: the local starting backend used to demonstrate persistent memory behavior without requiring cloud persistence first.
-- **Azure Cosmos DB**: the cloud persistence backend introduced later in the lab.
-- **Azure OpenAI configuration**: supports the model-driven memory processing used by the repo.
-- **Streamlit and FastAPI**: provide live interaction patterns for service-mode exploration.
+![](./Images/archdiagram.png)
+
+## 🔍 Explanation of Components
+
+- **Azure OpenAI:** Provides chat completion and embedding models that enable the agent to understand user requests, generate responses, and create vector embeddings for semantic memory search.
+
+- **Agent Framework:** A Microsoft SDK used to build AI agents, orchestrate workflows, and integrate tools and memory into agent applications.
+
+- **Agent Memory:** A memory layer that stores, retrieves, summarizes, and manages conversation history, enabling agents to maintain context across interactions.
+
+- **SQLite:** A lightweight local database used during development to persist conversation history and memory without requiring cloud resources.
+
+- **Azure Cosmos DB:** A cloud-based NoSQL database that provides durable, scalable storage for conversations, summaries, insights, and vector data across sessions.
+
+- **FastAPI Memory Server:** Exposes Agent Memory as an HTTP service, allowing multiple applications and clients to access the same shared memory backend.
+
+- **Streamlit UI:** A web-based dashboard used to visualize conversations, memory updates, and recall behavior in real time.
+
+- **Memory-Enabled Agent:** An AI agent integrated with Agent Memory that retrieves previous conversations, generates context-aware responses, and preserves knowledge across multiple sessions.
 
 # 🚀 Getting Started with Lab
 
-Welcome to the Modern Identity Governance & Secure Access with Microsoft Entra Workshop!. Let's begin by making the most of this experience:
+Welcome to the Advanced Dynamic Memory Architecture — Agent Memory Workshop!. Let's begin by making the most of this experience:
 
 ## Accessing Your Lab Environment
 
@@ -86,14 +117,6 @@ For convenience, you can open the guide in a separate window by selecting the **
 Feel free to **start, stop, or restart (2)** your virtual machine as needed from the **Resources (1)** tab. Your experience is in your hands!
  
 ![Manage Your Virtual Machine](./Images/a6.png)	
-
-## Lab Validation
-
-After completing the task, hit the **Validate** button under the Validation tab integrated within your lab guide. If you receive a success message, you can proceed to the next task; if not, carefully read the error message and retry the step, following the instructions in the lab guide.
-
-   ![Inline Validation](./Images/a7.png)
- 
-Now you're all set to explore the powerful world of technology. Feel free to reach out if you have any questions along the way. 
 
 ## Let's Get Started with Azure Portal
  

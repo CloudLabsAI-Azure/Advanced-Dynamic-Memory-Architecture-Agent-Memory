@@ -324,3 +324,5 @@ In this exercise, you accomplished the following:
 - Ran the insight curation notebook and observed contradiction resolution and profile evolution (conservative → aggressive), verified with a real LLM call that the evolved profile drives personalized responses
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
+
+   ![](./Images/a12.png)

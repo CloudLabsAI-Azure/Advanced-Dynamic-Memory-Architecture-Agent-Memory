@@ -425,3 +425,5 @@ In this exercise, you accomplished the following:
 - Verified that switching from SQLite to Cosmos DB requires changing exactly one argument (`db_type=DatabaseType.COSMOSDB`) with all agent and memory logic unchanged
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
+
+   ![](./Images/a12.png)
