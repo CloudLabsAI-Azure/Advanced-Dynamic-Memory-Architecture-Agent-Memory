@@ -41,17 +41,11 @@ This lab is designed to provide participants with hands-on experience in buildin
 ## ⚙️ Prerequisites
 
 Participants should have:
-
 - An active **Microsoft Azure subscription** with access to Azure OpenAI and Azure Cosmos DB resources pre-provisioned in the lab.
-
 - **Python 3.12 or later** installed on the lab VM.
-
 - **Visual Studio Code** with the Python and Jupyter extensions.
-
 - **Basic Python knowledge** working with environment variables, and running scripts from the command line using `uv`.
-
 - **Familiarity with Azure OpenAI** — basic understanding of how Azure OpenAI works and how to navigate the Azure Portal to locate resources and credentials.
-
 - No prior Agent Memory experience required — the lab introduces all framework concepts from scratch.
 
 ## 🏗️ Architecture
@@ -88,7 +82,7 @@ Welcome to the Advanced Dynamic Memory Architecture — Agent Memory Workshop!. 
 
 Once you are ready to dive in, your virtual machine and guide will be right at your fingertips within your web browser.
  
-![Access Your VM and Lab Guide](./Images/a2.png)
+![Access Your VM and Lab Guide](./Images/a1.png)
 
 ## Lab Guide Zoom In/Zoom Out
 
