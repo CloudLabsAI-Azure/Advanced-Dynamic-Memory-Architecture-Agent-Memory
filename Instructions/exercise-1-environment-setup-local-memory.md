@@ -64,12 +64,6 @@ In this task, you will verify that the required development tools are available,
    - **server/** includes components used when exposing Agent Memory as a service.
    - **tests/** contains automated tests that validate the functionality of the project.
 
-1. Open **demo/README.md** and take a moment to review the demo matrix table — it maps each numbered demo script/notebook to the feature it showcases.
-
-   ![](./Images/ETS119.png)
-
-   > **Tip**: Reviewing the project documentation before running the notebooks is a good practice, as it provides context about the examples you will execute during the lab.
-
 1. Click on the **ellipsis (...) (1)** in the top menu, then select **Terminal (2)** and click **New Terminal (3)**.
 
    ![](./Images/ETS117.png)
@@ -92,7 +86,7 @@ In this task, you will navigate to the pre-created Azure OpenAI resource, open i
 
 > **Note:** The Azure OpenAI resource and its model deployments have already been created in this lab environment — you do not need to create any new resources.
 
-1. On the **Microsoft Edge** browser,go to **Azure portal**. In the search bar at the top, search for **Azure OpenAI (1)**, and select **Azure OpenAI (2)** from the **Services** section.
+1. On the **Microsoft Edge** browser, go to **Azure portal**. In the search bar at the top, search for **Azure OpenAI (1)**, and select **Azure OpenAI (2)** from the **Services** section.
 
    ![](./Images/ETS1111.png)
 
@@ -102,7 +96,7 @@ In this task, you will navigate to the pre-created Azure OpenAI resource, open i
 
 1. From the left navigation pane, expand **Resource Management** and then select **Keys and Endpoint (1)**. 
 
-1. Copy the **Endpoint (2)** and paste it into Notepad for later use:
+1. Copy the **Endpoint (2)** and paste it into Notepad for later use.
 
 1. Copy the **KEY 1 (3)** and paste it into Notepad for later use.
 
@@ -127,7 +121,7 @@ In this task, you will navigate to the pre-created Azure OpenAI resource, open i
 
 ## Task 3: Install Dependencies & Run Basic Demo
 
-In this task, you will install the project dependencies, open the `01_basic_memory.ipynb` notebook, select the correct kernel, and execute the setup, initialization, and Session 1 cells while understanding exactly what each one does.
+In this task, you will install the project dependencies, open the `01_basic_memory.ipynb` notebook, select the Python kernel, and execute the setup, initialization, and Session 1 cells to understand how Agent Memory stores conversations, manages the memory buffer, and prepares data for long-term recall.
 
 1. In the Visual Studio Code **terminal**, run the below command from the project root to install all dependencies:
 
@@ -137,21 +131,13 @@ In this task, you will install the project dependencies, open the `01_basic_memo
 
    ![](./Images/ETS131.png)
 
-   > **Note:** This can take 5–10 minutes to complete. Wait for the command execution to complete, then proceed ahead.
+   > **Note:** This can take 10–15 minutes to complete. Wait for the command execution to complete, then proceed ahead.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **01_basic_memory.ipynb (2)** file.
 
    ![](./Images/ETS133.png)
 
-1. The notebook introduces the key capabilities that you will explore throughout this exercise, including:
-
-   - Creating and storing conversations
-   - Managing active conversation memory
-   - Automatic summarization
-   - Cross-session memory retrieval
-   - Semantic search using embeddings
-
-   Throughout this exercise, the notebook uses **SQLite** as the local memory store, allowing you to observe how Agent Memory behaves without requiring any additional database configuration.
+1. Read the **01 Basic Agent Memory Demo** markdown cell to understand the key Agent Memory capabilities demonstrated in this notebook, including conversation storage, active memory management, automatic summarization, cross-session recall, and semantic search using **SQLite** as the local memory backend.
 
       ![](./Images/ETS132.png)
 
@@ -159,9 +145,9 @@ In this task, you will install the project dependencies, open the `01_basic_memo
 
    ![](./Images/ETS134.png)
 
-1. Wait for the Python extension to be installed.
+1. Wait for the Python and Jupyter extensions to be installed.
 
-   > **Note:** This can take 5–10 minutes to complete. Wait for the command execution to complete, then proceed ahead.
+   > **Note:** This can take 5–10 minutes to complete. Wait for the installation to complete, then proceed ahead.
 
 1. Once the Python extension is installed, click on **Select Kernel (1)** then select **Python Environments (2)** 
 
@@ -171,125 +157,61 @@ In this task, you will install the project dependencies, open the `01_basic_memo
 
    ![](./Images/ETS136.png)
 
-1. Run the first code cell under **Step 1: Setup and Configuration**.
+1. Scroll down to **Step 1: Setup and Configuration** and click **Run (▶)** to execute the first code cell. This cell prepares the notebook environment before running the Agent Memory demonstrations by importing the required libraries, locating the project directory, loading the Azure OpenAI configuration from the **.env** file, configuring the demo settings, and creating a fresh **SQLite** database for the exercise.
 
    ![](./Images/ETS137.png)
 
-   This cell prepares the notebook environment before any Agent Memory operations begin.
-
-   During execution, the notebook:
-
-   - Imports the required Python libraries.
-   - Locates the project root directory.
-   - Loads the Azure OpenAI configuration from the **.env** file.
-   - Defines the user identifier used throughout the demonstration.
-   - Creates a fresh SQLite database for the demo by removing any previous database file.
-
-   These initialization steps ensure that every notebook execution starts with a clean environment.
-
-   After the cell completes successfully, verify that the following message appears:
-
-   ✅ Step 1 Complete: `All imports and paths configured!`
+1. After the cell executes successfully, verify that the output confirms the project paths and environment configuration, and displays the message **"✅ Step 1 Complete: All imports and paths configured!"**, as shown in the following image.
 
       ![](./Images/ETS138.png)
 
-1. Run the next code cell under **Step 2: Initialize AgentMemory**. This cell creates the memory system itself:
+1. Scroll down to **Step 2: Initialize AgentMemory with Buffer Configuration** and click **Run (▶)** to execute the code cell. This cell initializes the **Azure OpenAI** client, validates the required environment variables, creates the **Agent Memory** configuration, initializes the local **SQLite** memory database, and connects Agent Memory with Azure OpenAI.
 
    ![](./Images/ETS139.png)
 
-   During execution, the notebook:
+1. After the cell executes successfully, verify that the output confirms the Azure OpenAI client and Agent Memory were initialized successfully, and displays the message **"✅ AgentMemory initialized and ready!"**, as shown in the following image.
 
-   - Creates the Azure OpenAI client.
-   - Validates the required environment variables.
-   - Initializes the local SQLite memory database.
-   - Creates the Agent Memory configuration.
-   - Connects the memory engine with Azure OpenAI.
+   ![](./Images/ETS1310.png)
 
-   #### Understanding Memory Configuration
+   > **Important:**  Agent Memory uses a configurable conversation buffer to efficiently manage long-running conversations.
+   > - **buffer_size** specifies the maximum number of conversation turns before automatic summarization begins.
+   > - **active_turns** determines how many of the most recent conversation turns remain available in their original form.
+   > - **longterm_synthesis_frequency** controls how often long-term insights are generated from completed conversations.
+   > As conversations grow, older interactions are automatically summarized while recent messages remain available. This helps preserve important context without exceeding the model's context window.
 
-   Agent Memory maintains a configurable conversation buffer to efficiently manage long conversations.
+1. Scroll down to **Step 3: Session 1 – Multi-Turn Conversation with Buffer Pruning** and click **Run (▶)** to execute the code cell. This cell starts a new conversation session and processes a predefined **eight-turn conversation**. During execution, Agent Memory stores each user and assistant interaction, monitors the configured memory buffer, automatically summarizes older conversation turns when the buffer limit is reached, and generates long-term insights for future retrieval.
 
-   The notebook initializes the following configuration:
+   ![](./Images/ETS1312.png)
 
-   - **buffer_size** determines how many conversation turns are retained before summarization begins.
-   - **active_turns** specifies how many of the most recent conversation turns remain available in their original form.
-   - **longterm_synthesis_frequency** controls how frequently long-term insights are generated from completed conversations.
+1. After the cell executes successfully, verify that the output shows the conversation session has started, the buffer configuration has been applied, and the conversation turns are being processed, as shown in the following image.
 
-   As conversations become longer, older interactions are summarized automatically while recent messages remain available, allowing the AI application to preserve important context without exceeding the model's context window.
+   ![](./Images/ETS1313.png)
 
-   After the initialization completes successfully, verify that the following message appears:
+   > **Important:** Agent Memory continuously monitors the configured **buffer_size** as the conversation grows. When the buffer reaches its limit, older conversation turns are automatically summarized while the most recent turns remain available in their original form. This allows the application to preserve important context without exceeding the model's context window.
 
-   You should see: `✅ AgentMemory initialized and ready!`
-      
-      ![](./Images/ETS1310.png)
+   > **Note:** To view the complete output, scroll to the bottom of the cell output and click **scrollable element**, as shown in the following image.
 
-1. Run the next code cell under **Step 3: Session 1 — Multi-Turn Conversation with Buffer Pruning**. This is the main demonstration:
-
-      ![](./Images/ETS1312.png)
-
-   This section demonstrates how Agent Memory stores a conversation while automatically managing its memory buffer.
-
-   The notebook performs the following operations:
-
-   - Starts a new conversation session.
-   - Processes a predefined eight-turn conversation.
-   - Stores every user and assistant interaction.
-   - Monitors the configured memory buffer.
-   - Automatically summarizes older conversation turns when the buffer limit is reached.
-   - Generates the final conversation context for future retrieval.
-
-   As additional messages are stored, Agent Memory continuously evaluates the configured buffer size. Once the buffer reaches its threshold, earlier interactions are condensed into a summary while the most recent conversations remain unchanged.
-
-   This approach enables the application to retain important information while keeping the active context compact and efficient.
-
-
-      ![](./Images/ETS1313.png)
-
-      >**Note**: To verify the complete output block, scroll down to the end of the output and click on **scrollable element**.
-
-      ![](./Images/ETS1314.png)
+   ![](./Images/ETS1314.png)
 
 ## Task 4: Observe Memory Behavior
 
-In this task, you will explore how Agent Memory retrieves information across multiple sessions and performs semantic search on previously stored conversations. These capabilities enable AI applications to remember important information beyond a single conversation, providing more intelligent and context-aware responses.
+In this task, you will observe how Agent Memory retrieves information from previous sessions and uses semantic search to find relevant conversations. These capabilities help AI agents maintain context and deliver more relevant responses over time.
 
+1. Scroll down to **Step 4: Cross-Session Memory Recall** and click **Run (▶)** to execute the code cell. This cell starts a new session and automatically retrieves the conversation summaries and long-term insights generated during **Session 1**, demonstrating cross-session memory recall.
 
-1. Run the next code cell under **Step 4: Cross-Session Memory Recall**. This proves persistence across sessions:
+   ![](./Images/ETS1315.png)
 
-      ![](./Images/ETS1315.png)
+1. After the cell executes successfully, verify that the previous conversation context is loaded and the message **"✅ Cross-Session Memory Loaded!"** is displayed, as shown in the following image.
 
-   This demonstration starts a **new conversation session** for the same user while retrieving relevant information stored during the previous session.
+   ![](./Images/ETS1316.png)
 
-   During execution, the notebook performs the following actions:
+1. Scroll down to **Step 5: Semantic Search Demonstration** and click **Run (▶)** to execute the code cell. This cell performs semantic searches across the stored conversations by comparing the meaning of each query with previously stored memories, demonstrating how Agent Memory retrieves relevant information beyond exact keyword matches.
 
-   - Creates a new session for the existing user.
-   - Retrieves the conversation context from previous sessions.
-   - Loads previously generated conversation summaries.
-   - Retrieves long-term insights extracted from earlier interactions.
-   - Combines this information into a single context that can be used by the language model.
+   ![](./Images/ETS1317.png)
 
-   Verify in the preview that details from the book conversation (Session 1) are present even though this session has stored nothing yet.
+1. After the cell executes successfully, verify that the semantic search results are returned for each query and that the notebook ends with the message **"🎉 NOTEBOOK COMPLETE!"**, as shown in the following image.
 
-      ![](./Images/ETS1316.png)
-
-1. Run the final code cell under **Step 5: Semantic Search Demonstration**. This shows retrieval by meaning rather than keywords:
-
-      ![](./Images/ETS1317.png)
-
-   This cell demonstrates how Agent Memory searches previously stored conversations using vector embeddings.
-
-   During execution, the notebook:
-
-   - Creates multiple semantic search queries.
-   - Searches previously stored interactions.
-   - Retrieves the most relevant conversations.
-   - Displays the search results for each query.
-
-   Rather than searching for exact keywords, semantic search compares the meaning of the query with previously stored conversations, making retrieval significantly more intelligent.
-
-   You should see the output ending with: `🎉 NOTEBOOK COMPLETE!`
-
-      ![](./Images/ETS1318.png)
+   ![](./Images/ETS1318.png)
 
 ## Task 5: Explore Memory Configuration Tuning (Optional)
 
@@ -297,45 +219,37 @@ In this task, you will adjust the key memory configuration parameters in the not
 
 1. In the notebook, scroll to the **Step 2: Initialize AgentMemory** code cell and locate the **AgentMemoryConfig** block:
 
-   ```
-   config = AgentMemoryConfig(
-       buffer_size=6,
-       active_turns=4,
-       longterm_synthesis_frequency=1,
-   )
-   ```
-      ![](./Images/ETS1319.png)
-
+   ![](./Images/ETS155.png)
 
 1. Change **buffer_size** to a lower value, such as `3`, and **active_turns** to `2`.
 
-1. Restart the kernel by clicking **Restart** in the notebook toolbar and then **Run all** to execute all the cells from the top
+   ![](./Images/ETS154.png)
+
+1. Restart the kernel by clicking **Restart (1)** in the notebook toolbar and then **Run all (2)** to execute all the cells from the top
+
+   ![](./Images/ETS1320.png)
 
    > **Note:** Restarting is required — the memory object and configuration are created at cell execution time, so edits do not take effect on an already-running kernel state.
 
-      ![](./Images/ETS1320.png)
-
 1. Observe in the **Step 3** output how **summarization triggers earlier** than in the previous run — the buffer now fills after only 3 turns, so pruning happens much sooner in the 8-turn conversation, and only the last 2 turns remain verbatim.
 
-1. Next, experiment with **longterm_synthesis_frequency** — this controls how often insights are extracted at session end. Re-run and note the effect on the insight generation messages in the output.
+   ![](./Images/ETS151.png)
 
-1. After observing the differences, revert all values to their defaults (`buffer_size=6`, `active_turns=4`, `longterm_synthesis_frequency=1`), restart the kernel, and re-run the notebook once more to leave the environment in a clean state.
+   > **Note:** The remaining turns after pruning may not always exactly match the configured **`active_turns`** value. This is expected behavior based on Agent Memory's internal buffer management.
 
-   > **Note:** These same parameters appear again as production tuning knobs in a later exercise, so keep a note of what each one controls.
+1. Next, change **`longterm_synthesis_frequency`** to **`2`** and re-run the notebook. Notice that no long-term synthesis is generated after **Session 1**, as insights are created only after every **two completed sessions**.
+
+   ![](./Images/ETS153.png)
+      
+   ![](./Images/ETS152.png)
+
+1. After observing the differences, revert all values to their defaults (`buffer_size=6`, `active_turns=4`, `longterm_synthesis_frequency=1`) and save it by clicking on **CTRL + S**
+
+   ![](./Images/ETS155.png)
 
 ## 🧾 Summary
 
-In this exercise, you prepared the local development environment and explored the core capabilities of the Agent Memory framework using a **SQLite local memory store**.
-
-You accomplished the following:
-
-- Verified the required development tools and explored the project structure.
-- Configured the project to connect with the pre-provisioned Azure OpenAI resource.
-- Installed the required project dependencies.
-- Executed the **01_basic_memory.ipynb** notebook in Visual Studio Code.
-- Observed how Agent Memory stores conversations and automatically manages the active memory buffer.
-- Explored cross-session memory retrieval and semantic search using vector embeddings.
-- Experimented with memory configuration settings and observed how they influence conversation summarization and long-term insight generation.
+In this exercise, you prepared the local development environment and explored the core capabilities of the Agent Memory framework using a **SQLite** local memory store. You verified the required tools, configured the project to use the pre-provisioned Azure OpenAI resource, installed the project dependencies, and successfully executed the **01_basic_memory.ipynb** notebook in Visual Studio Code. You also observed how Agent Memory stores conversations, manages the active memory buffer, retrieves information across multiple sessions, and performs semantic search using vector embeddings. Finally, you experimented with key memory configuration settings to understand how they affect conversation summarization and long-term insight generation.
 
 You have successfully completed this exercise. Select **Next >>** to continue to the next exercise.
 

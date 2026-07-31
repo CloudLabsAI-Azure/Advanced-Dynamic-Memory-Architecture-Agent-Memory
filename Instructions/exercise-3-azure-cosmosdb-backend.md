@@ -4,36 +4,25 @@
 
 ## 📘 Scenario
 
-In the first two exercises, you stored agent memory in a **SQLite** database — a file that lives directly on your local machine. That works perfectly for learning and prototyping, but it has a fundamental limitation: the moment you close the session or restart the machine, the data is tied to that single device. No other application, user, or cloud service can reach it.
+In the previous exercises, Agent Memory stored conversations and long-term insights in a local **SQLite** database. While this approach is ideal for development and learning, the data is stored only on the local machine, making it unsuitable for applications that need persistent, shared, or cloud-accessible memory.
 
-In this exercise, you will move the **same agent memory system** to **Azure Cosmos DB** — a fully managed, cloud-hosted database that stores data as JSON documents and keeps that data available 24/7 from anywhere. You will run the same financial advisor scenario you used in Exercise 2, but this time everything the agent learns is stored in the cloud. You will then run a second notebook that shows how to keep the agent's long-term memory *bounded* — capping the number of insights so the agent stays sharp rather than accumulating noise forever.
-
-The key insight of this exercise is simple: **you only change one thing** — the backend configuration. All the memory logic, the agent, and the conversation code stay exactly the same.
+In this exercise, you will migrate the same Agent Memory implementation to **Azure Cosmos DB** without changing the agent or conversation logic. You will verify that conversations and insights are stored in the cloud, explore how memory persists across sessions, and learn how bounded long-term memory keeps user profiles accurate by retaining the most relevant insights while gradually removing less useful information.
 
 ## 📖 Overview
 
-In this exercise, you will:
-
-- Understand why a cloud backend is needed and how it differs from SQLite
-- Review and verify the Cosmos DB connection settings in your `.env` file
-- Run the `04_cosmosdb.ipynb` notebook to see cloud-backed memory in action
-- Verify that data was actually saved to Cosmos DB using the Azure Portal
-- Run the `09_itemized_insights_cosmos.ipynb` notebook to see bounded long-term memory with a scoring and forgetting system
-- Review the four supported backends and understand when to choose each one
+In this exercise, you will configure Agent Memory to use Azure Cosmos DB, run the provided notebooks to store and retrieve conversation history from the cloud, verify the stored data in the Azure portal, and explore bounded long-term memory through itemized insights. You will also learn how changing only the storage backend allows the same agent and memory workflow to scale from local development to cloud-based applications.
 
 ## 🎯 Objectives
 
 In this exercise, you will perform:
 
-- Task 1: Understand Backend Options
+- Task 1: Understand Backend Options and configure CosmosDB 
 - Task 2: Run the Cosmos DB Demo
 - Task 3: Verify Data Persisted in Cosmos DB
 - Task 4: Run Itemized Insights with Cosmos DB
 - Task 5: Backend Selection Trade-offs (Read- Only)
 
----
-
-## Task 1: Understand Backend Options
+## Task 1: Understand Backend Options and configure CosmosDB
 
 In this task, you will learn what a **backend** means in Agent Memory, understand why Cosmos DB is needed for production workloads, confirm the Cosmos DB credentials in your `.env` file, and navigate to the pre-created Cosmos DB account in the Azure Portal.
 
@@ -62,15 +51,16 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 | Cost | Free (a local file) | Azure consumption-based pricing |
 | Best use | Prototyping | Production, multi-user, or deployed apps |
 
-### Steps
-
 1. Open a browser on the lab VM and navigate to the Azure Portal:
 
    ```
    https://portal.azure.com
    ```
 
-1. Sign in using the lab credentials provided in the **Environment** tab if prompted.
+1. If it is prompted to signin, use below credentials
+
+   - **Email/Username:** <inject key="AzureAdUserName"></inject>
+   - **Temporary Access Pass:** <inject key="AzureAdUserPassword"></inject>
 
 1. In the search bar at the top of the Azure Portal, search for **Azure Cosmos DB (1)** and select **Azure Cosmos DB (2)** from the Services section.
 
@@ -80,7 +70,7 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 
    ![](./Images/ETS312.png)
 
-1. From the left navigation pane, expand **Settings (1)** and then select **Keys (2)**. Copy the **URI (3)** and paste it in Notepad
+1. From the left navigation pane, expand **Settings (1)** and then select **Keys (2)**. Copy the **URI (3)** and paste it in Notepad.
 
 1. Now copy the **Primary Key (4)** value and paste it in Notepad.
 
@@ -88,7 +78,7 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 
    > **Note:** Keys in the portal are hidden by default. Click the eye icon next to a key to reveal it.
 
-1. Return to Visual Studio Code. In the Explorer pane, select `.env` **(1)** and provide the following environment variables using the values you copied to Notepad:
+1. Return to Visual Studio Code. In the Explorer pane, select `.env` and provide the following environment variables using the values you copied to Notepad:
 
    - **COSMOS_ENDPOINT**: Repalce the endpoint value you copied in Step 5.
    - **COSMOS_KEY**: Replace the API key you copied in Step 6.
@@ -99,104 +89,41 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 
 ## Task 2: Run the Cosmos DB Demo
 
-In this task, you will open the `04_cosmosdb.ipynb` notebook, select the kernel, and execute each cell while understanding exactly what each one does. This notebook runs the same three-session financial advisor scenario from Exercise 2, but now all memory is stored in Azure Cosmos DB instead of a local SQLite file.
+In this task, you will open the **`04_cosmosdb.ipynb`** notebook and execute its code cells to explore how Agent Memory uses **Azure Cosmos DB** as the storage backend. You will run the same three-session financial advisor scenario from the previous exercise and observe how conversations, summaries, and long-term insights are persisted in the cloud instead of a local SQLite database.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **04_cosmosdb.ipynb (2)** notebook.
 
    ![](./Images/ETS315.png)
 
-1. Take a moment to read the first markdown cell, **"Demo 4: Financial Advisor with CosmosDB Backend"**. It lists four things this notebook demonstrates:
+1. Read the first markdown cell, **"Demo 4: Financial Advisor with CosmosDB Backend"**. It introduces the financial advisor scenario, explains how Agent Memory uses **Azure Cosmos DB** to store conversation history across multiple sessions, and outlines the notebook flow, including cross-session recall, memory search, extracted insights, and session summaries. Also, verify that the required Azure OpenAI and Cosmos DB environment variables match those configured in the previous task.
 
    ![](./Images/ETS322.png)
 
-   - A financial advisor agent with two retirement tools
-   - Conversation memory stored in **Cosmos DB**
-   - Multiple sessions to demonstrate cross-session recall
-   - Final memory search, insights, and session summaries
-
-   It also lists the required environment variables — confirm these match what you verified in Task 3.1.
-
 1. Click **Select Kernel (1)** in the top-right corner and choose **agent-memory(3.12.X)(Python 3.12.X) (2)** if prompted.
 
-   ![](./Images/ETS328.png)
+   ![](./Images/ETS328new.png)
 
-1. Run the first code cell (**Cell 1: Setup, Imports & Environment Configuration**). This cell:
+1. Run the first code cell (**Cell 1: Setup, Imports & Environment Configuration**). This cell imports the required libraries, loads the Azure OpenAI and Azure Cosmos DB settings from the **`.env`** file, configures the project environment, and initializes the demo using **`USER_ID = "sarah_demo_cosmos"`** so all conversation data is associated with the same user in Cosmos DB.
 
    ![](./Images/ETS351.png)
 
-   - **Imports all required libraries**: `asyncio`, `os`, `sys`, `pathlib`, and `dotenv` for loading the `.env` file.
-   - **Fixes text encoding** — ensures emoji and special characters print cleanly in the terminal (`sys.stdout.reconfigure`).
-   - **Loads your `.env` file** — this is where the Cosmos DB and Azure OpenAI values from Task 3.1 are read.
-   - **Finds the project root** and adds it to `sys.path` so the `memory` package can be imported.
-   - **Imports the key classes**: `AzureOpenAI`, `Agent`, `AgentMemory`, `AgentMemoryConfig`, and critically — `DatabaseType` from `memory.db`.
-   - **Sets `USER_ID = "sarah_demo_cosmos"`** — this is the unique key that identifies Sarah's memory in Cosmos DB. Every turn, summary, and insight stored by this demo will carry this ID.
-
-   You should see: `Imports and environment setup complete.`
+1. Verify that the output ends with **`Imports and environment setup complete.`**
 
    ![](./Images/ETS3210.png)
 
-1. Run the second code cell (**Cell 2: Tools, Session Runner & CosmosDB Memory Setup**). This cell:
+1. Run the second code cell **Cell 2: Tools, Session Runner & CosmosDB Memory Setup**. This cell creates the financial tools, configures Agent Memory to use **Azure Cosmos DB**, and defines the session runner that manages conversations and retrieves previously stored memory.
 
    ![](./Images/ETS352.png)
 
-   - **Defines two financial tools** the agent can call:
-     - `get_401k_limit(year)` — returns the 401k contribution limit for a given year (e.g., `"$23,500 (under 50), $31,000 (50+)"` for 2025).
-     - `get_roth_ira_limit(year)` — returns the Roth IRA limit.
-   - **Defines `run_session()`** — a helper function that starts a memory session, prints the loaded context (prior memory), runs a list of user queries through the agent, ends the session with reflection, and prints how many insights were extracted.
-
-   The key line inside `run_session()` is:
-
-   ```python
-   context = await memory.get_context()
-   print(f"Memory context loaded ({len(context)} chars):")
-   ```
-
-   On Session 1, this will print a small number of characters (no prior history). On Sessions 2 and 3, you will see a larger number — that is Sarah's profile being loaded from Cosmos DB automatically.
-
-   You should see: `Tools, session runner, and Cosmos memory client are ready.`
+2. Verify that the output ends with **`Tools, session runner, and Cosmos memory client are ready.`** During the demo, notice that the amount of loaded memory context increases in later sessions as the agent retrieves Sarah's previously stored profile from Azure Cosmos DB.
 
    ![](./Images/ETS354.png)
 
-1. Run the final code cell (**Cell 3: Run Three Sessions Demo with CosmosDB Memory**). This is the cell that actually connects to Cosmos DB and runs the full scenario. Watch the output section by section:
+1. Run the final code cell (**Cell 3: Run Three Sessions Demo with CosmosDB Memory**). This cell connects to **Azure Cosmos DB**, runs the three-session financial advisor scenario, and stores Sarah's conversations, summaries, and long-term insights in the cloud.
 
    ![](./Images/ETS353.png)
 
-   **Connection check:**
-   - The cell first checks for `COSMOS_ENDPOINT` or `COSMOS_CONNECTION_STRING`. If neither is found, it prints an error and stops — go back to your `.env` file if this happens.
-   - If credentials are found, it prints: `CosmosDB: Endpoint configured` (or `Connection String configured`).
-
-   **Configuration — the key difference from SQLite:**
-   ```python
-   memory = AgentMemory(
-       user_id=USER_ID,
-       openai_client=openai_client,
-       db_type=DatabaseType.COSMOSDB,        # ← THIS IS THE ONLY CHANGE
-       connection_string=cosmos_conn,
-       config=config,
-   )
-   ```
-   Everything else — the agent, the tools, the session flow — is identical to the SQLite demo. `db_type=DatabaseType.COSMOSDB` is the single line that switches the backend.
-
-   **Session 1 — Initial Consultation:**
-   - Sarah introduces herself: *"I'm Sarah, 35, software engineer making $150,000/year."*
-   - Watch the `Memory context loaded (X chars)` line — this should be very short, because there is no prior history for this user yet.
-   - At session end: `Insights: N` — the number of facts the system extracted about Sarah.
-
-   **Session 2 — Investment Strategy:**
-   - Sarah asks: *"Based on what we discussed before, what asset allocation do you recommend?"*
-   - Watch the `Memory context loaded (X chars)` line again — this should now be **larger** than Session 1, because Sarah's profile from Session 1 was retrieved from Cosmos DB.
-   - The agent's response should reference Sarah's risk tolerance and 30-year time horizon from Session 1.
-
-   **Session 3 — Tax Planning:**
-   - Sarah asks about tax optimization *"given my income and the retirement accounts we discussed."*
-   - The context should be even richer, drawing on both Sessions 1 and 2.
-
-   **Final inspection:**
-   - `memory.search("What is Sarah's risk tolerance?")` — a semantic search that retrieves the stored answer.
-   - `memory.get_sessions()` — all three sessions with their auto-generated summaries.
-   - `memory.get_insights()` — the extracted facts about Sarah, each with a category and confidence score.
-
-   You should see the output ending with a cleanup confirmation.
+1. Verify that the demo completes successfully. As the sessions progress, notice that the **Memory context loaded** value increases as previously stored information is retrieved from Azure Cosmos DB, enabling the agent to personalize its responses across sessions. Also confirm that the notebook performs a semantic memory search, lists the recorded session summaries and extracted insights.
 
    ![](./Images/ETS3214.png)
 
@@ -204,9 +131,9 @@ In this task, you will open the `04_cosmosdb.ipynb` notebook, select the kernel,
 
 ## Task 3: Verify Data Persisted in Cosmos DB
 
-In this task, you will confirm that the data written in Task 3.2 actually exists in your Azure Cosmos DB account by browsing the containers in Data Explorer, inspecting a stored JSON item, and verifying that memory survives a full kernel restart.
+In this task, you will confirm that the data written in Task 2 actually exists in your Azure Cosmos DB account by browsing the containers in Data Explorer, inspecting a stored JSON item, and verifying that memory survives a full kernel restart.
 
-1. Return to your browser and In the search bar at the top of the Azure Portal, search for **Azure Cosmos DB (1)** and select **Azure Cosmos DB (2)**.
+1. Return to your browser and in the search bar at the top of the Azure Portal, search for **Azure Cosmos DB (1)** and select **Azure Cosmos DB (2)**.
 
    ![](./Images/ETS311.png)
 
@@ -218,6 +145,8 @@ In this task, you will confirm that the data written in Task 3.2 actually exists
 
    ![](./Images/ETS332.png)
 
+   >**Note:** If you get any pop-up. please close it.
+
 1. In the Data Explorer, expand the **agent_memory_db** database node. Inside **agent_memory_db**, expand each container to see what the demo created. You should find containers similar to the following:
 
    - **interactions** — the raw conversation turns (Sarah's questions and the advisor's answers).
@@ -226,28 +155,23 @@ In this task, you will confirm that the data written in Task 3.2 actually exists
 
    ![](./Images/ETS333.png)
 
-1. Click on the **interactions (1)** container to expand it, then click **Items (2)** underneath it.
-
-1. Click on any item in the list to open its **JSON document (3)** in the right pane. Verify that:
-
-   - The `user_id` field shows `"sarah_demo_cosmos"` — matching the `USER_ID` set in the notebook.
-   - The document contains the actual conversation text from Task 2.
+1. Expand the **interactions (1)** container, select **Items (2)**, and open any JSON document **(3)**. Verify that the `user_id` is **`"sarah_demo_cosmos"`**, matching the notebook's `USER_ID`, and that the document contains the conversation data generated during Task 2.
 
    ![](./Images/ETS335.png)
 
    > **Note:** In Azure Cosmos DB for NoSQL, every piece of data is stored as a JSON document inside a **container** (similar to a table in SQL, but schema-free). Each document has a unique `id` and a `partition key` — in this project, the partition key is the `user_id`, which means all of Sarah's data is grouped together for efficient retrieval.
 
-1. Click on the **insights (1)** container → **Items (2)** and open one of the insight documents. Confirm it contains a fact extracted from the conversation — for example, Sarah's risk tolerance or income level.
+1. Click on the **insights (1)** container → **Items (2)** and open one of the insight documents **(3)**. Confirm it contains a fact extracted from the conversation — for example, Sarah's risk tolerance or income level.
 
-   ![](./Images/ETS335.png)
+   ![](./Images/ETS336.png)
 
 1. Now verify **cross-run persistence** — this is the most important part. Return to Visual Studio Code, and **restart the notebook kernel** by clicking the **Restart** button in the notebook toolbar.
 
    ![](./Images/ETS337.png)
 
-1. Run only the first two cells again (Cell 1 — imports and Environment, Cell 2 — tools and sessions) to reinitialize the environment. Do **not** run the **Cell 4: Detailed Execution Plan**.
+1. Run only the first two cells again (**Cell 1 — imports and Environment, Cell 2 — tools and sessions**) to reinitialize the environment. Do **not** run the **Cell 3: Run Three Sessions Demo with CosmosDB Memory**.
 
-1. Click on  **+code** above **Cell 4: Detailed Execution Plan** and run the following snippet to confirm prior data is accessible immediately after a fresh kernel start:
+1. Click on  **+code** above **Cell 3: Run Three Sessions Demo with CosmosDB Memory** and run the following snippet to confirm prior data is accessible immediately after a fresh kernel start:
 
    ![](./Images/ETS339.png)
 
@@ -286,104 +210,50 @@ This notebook simulates six months of client sessions, capped at `MAX_INSIGHTS =
 
    ![](./Images/ETS342.png)
 
-1. Run the first code cell (**Cell 1 — Environment Setup & Configuration**). This cell:
+1. Run the first code cell **Cell 1: Environment Setup & Configuration**. This cell loads the project environment, imports the Cosmos DB and insight curation components, sets the demo configuration (`USER_ID = "memory_priority_demo_cosmos"` and `MAX_INSIGHTS = 5`), and defines the six-session timeline used to demonstrate how long-term insights evolve over time.
 
    ![](./Images/ETS3411.png)
 
-   - **Loads your `.env` file** and resolves the project root.
-   - **Imports the low-level Cosmos DB classes** directly — `CosmosDBDatabase`, `Reflection`, `LongTermInsightItem`, `rank_insights`, `calculate_retention_score`. Unlike the previous notebook, this demo bypasses the `AgentMemory` wrapper and works directly with the database and reflection engine to give you full visibility into the scoring system.
-   - **Sets `USER_ID = "memory_priority_demo_cosmos"`** and **`MAX_INSIGHTS = 5`**.
-   - **Defines the TIMELINE** — six pre-scripted sessions for a user called Alex, simulated across January–June 2025:
-     - Month 1: Alex is 28, earns $120k, very risk-averse due to 2008 family losses, interested in Roth IRA.
-     - Month 2: Alex opens a Roth IRA, still conservative (money market fund).
-     - Month 3: Tax season questions, plans to max out the Roth IRA.
-     - Months 4–6: Alex's situation and preferences evolve — watch how the insight table changes.
-
-   You should see: `[Setup complete]` or equivalent output.
+2. Verify that the setup completes successfully and the output ends with **`Setup complete.`**
 
    ![](./Images/ETS347.png)
 
-1. Run the second code cell (**Cell 2 — Helper Functions for Insight Management**). This cell defines the utility functions the main demo uses:
+1. Run the second code cell **Cell 2: Helper Functions for Insight Management**. This cell creates the helper functions used throughout the demo to retrieve, display, rank, and prune long-term insights stored in **Azure Cosmos DB**.
 
    ![](./Images/ETS3410.png)
 
-   - **`print_insight_table(items, now, title)`** — prints a formatted table of current insights showing their `ID`, `Score` (retention score), `Access` count (how many times they have been cited), `Age`, `Importance`, and the first 38 characters of the insight text. You will see this table printed before and after every session in the main run.
-   - **`get_insight_items(db, user_id)`** — queries Cosmos DB for all stored long-term insight items for the user.
-   - **`cleanup_demo_data(db, user_id)`** — deletes all existing insights for the demo user so each run starts clean.
-   - **`prune_insights(db, user_id, items, max_items, now)`** — the core **bounded memory function**: ranks all insights by their retention score and deletes any beyond `MAX_INSIGHTS`. Pruned items are permanently removed from Cosmos DB.
+2. Verify that the output ends with **`Helper functions are ready.`** The helper functions will be used later in the notebook to display insight tables showing each insight's **retention score**, **access count**, **age**, **importance**, and **content**, retrieve insights from Cosmos DB, remove existing demo data before each run, and automatically rank and prune insights so that only the highest-priority items are retained.
 
-   You should see output as: `Helper functions are ready`
+   ![](./Images/ETS349.png)
 
-      ![](./Images/ETS349.png)
-
-1. Run the final code cell (**Cell 3 — Execute Full 6-Month Memory Simulation**). Watch the output section by section — it is long, but each section tells a clear story:
+1. Run the final code cell (**Cell 3: Execute Full 6-Month Memory Simulation**). This cell simulates six months of conversations for Alex, extracting new insights after each session, ranking them by retention score, and automatically pruning lower-priority insights once the memory limit (`MAX_INSIGHTS = 5`) is exceeded.
 
    ![](./Images/ETS348.png)
 
-   **Connection:**
-   - The cell connects to Cosmos DB using your credentials and calls `cleanup_demo_data()` to delete any prior insights for this demo user — ensuring a clean run.
-   - You should see: `[Connecting to Azure CosmosDB...]` followed by `[Connected successfully]`.
-
-   **For each of the six sessions, watch for this pattern:**
-
-   *Before the session:*
-   ```
-   Memory State BEFORE Session:
-   ID         Score  Access      Age  Importance   Text
-   ...
-   ```
-   This table shows exactly which insights are in Cosmos DB **before** this session processes. In Session 1 (Month 1) it will say `[No existing insights - this is the first session]`.
-
-   *During the session:*
-   - `[Processing session...]` — the notebook sends the session's turns to the reflection engine to extract new insights.
-   - `New insights: N` — how many new insights were extracted from this session.
-   - Each new insight is printed with its generated ID and the first 50 characters of its text.
-   - `Cited existing: [...]` — which prior insight IDs were referenced in this session (these get their `access_count` incremented, making them stronger).
-
-   *After the session — the pruning decision:*
-   Once the insight count exceeds `MAX_INSIGHTS = 5`, the notebook prints which insights were **kept** and which were **pruned** (removed from Cosmos DB). Look for lines like:
-   ```
-   BOUNDED MEMORY: 6 insights → kept 5, pruned 1
-   Pruned (low retention score): [insight ID]
-   ```
-
-   **By Session 6**, compare the insight table to what it was after Session 1 — you will see that:
-   - Insights about Alex's early risk-averse stance may have decayed and been pruned.
-   - Insights that were repeatedly referenced (like the Roth IRA) have high `access_count` scores and remain.
-   - The agent's memory is now a curated, scored representation of what matters most about Alex — not a raw dump of everything that was ever said.
+2. Observe how the memory evolves throughout the simulation. Before each session, the notebook displays the current insight table. After processing the session, it extracts new insights, updates the retention scores of previously referenced insights, and, when necessary, removes the lowest-priority insights to keep memory within the configured limit. By the final session, notice how frequently referenced insights are retained while older or less relevant ones are pruned, resulting in a concise, high-value long-term memory.
 
    ![](./Images/ETS429.png)
 
-1. After the main run completes, return to the **Azure Portal Data Explorer** and refresh the **insights** container. Confirm that exactly **5** (or fewer) insight documents exist for `user_id = "memory_priority_demo_cosmos"` — the pruning was real, not just simulated.
+1. Compare the two notebooks and identify the **main difference** in how they manage long-term insights:
 
-   ![](./Images/ETS429.png)
-
-1. Compare the two notebooks by verifying the following differences in the output:
-
-   - **`04_cosmosdb.ipynb`** — insights accumulate without a cap. The `get_insights()` call at the end shows every insight extracted across all sessions.
-   - **`09_itemized_insights_cosmos.ipynb`** — the insight count never exceeds `MAX_INSIGHTS = 5`. Older, less-referenced insights are physically deleted from Cosmos DB.
+   - **`04_cosmosdb.ipynb`** stores and retains all extracted insights, allowing the knowledge base to grow over time.
+   - **`09_itemized_insights_cosmos.ipynb`** implements **bounded memory**, limiting the total number of retained insights to `MAX_INSIGHTS = 5` by ranking and pruning lower-priority insights.
 
 ## Task 5: Backend Selection Trade-offs (Read- Only)
 
-In this task, you will verify the four supported backends in the project's codebase, review a complete comparison table, and confirm why Cosmos DB is the right intermediate step between a local prototype and a production deployment.
+In this task, you will verify the four supported backends in the project's codebase, review a complete comparison table
 
-### Step 1 — Verify the four backend types in the code
+### Verify the four backend types in the code
 
-1. In Visual Studio Code Explorer pane, navigate to **memory/db/** and open the file that defines the `DatabaseType` enum (look for a file named `__init__.py`, `factory.py`, or similar).
+1. In Visual Studio Code Explorer pane, navigate to **memory/db/** and open the file `factory.py`.
 
-1. Confirm the four accepted values appear in the code:
+   ![](./Images/ETS351new.png)
 
-   ```python
-   class DatabaseType(str, Enum):
-       SQLITE = "sqlite"
-       COSMOSDB = "cosmosdb"
-       AZURE_AI_SEARCH = "azure_ai_search"
-       POSTGRESQL = "postgresql"
-   ```
+1. Confirm the four backend values appear in the code:
 
-   > **Note:** The exact file name may vary between repo versions. Use **CTRL + SHIFT + F** in VS Code to search across all files for `DatabaseType` if you cannot find it immediately.
+   ![](./Images/ETS352new.png)
 
-### Step 2 — Review the backend comparison
+### Review the backend comparison
 
 Review the following table. Verify each row against your direct experience from Exercises 1, 2, and 3:
 
@@ -394,35 +264,9 @@ Review the following table. Verify each row against your direct experience from 
 | **Azure AI Search** | Azure cloud — search-optimized index | When semantic/vector retrieval quality is the priority | Best-in-class hybrid (keyword + vector) retrieval | Higher setup complexity; less suited as a general-purpose store |
 | **PostgreSQL** | SQL database (local or cloud-hosted) | Teams already standardizing on relational storage | Familiar SQL tooling, strong operational ecosystem | Requires schema management; less natural for JSON/vector workloads |
 
-### Step 3 — Verify Cosmos DB as the practical intermediate step
-
-1. In the Explorer pane, open the **04_cosmosdb.ipynb** notebook and locate Cell 4 again. Find this line:
-
-   ```python
-   db_type=DatabaseType.COSMOSDB,
-   ```
-
-1. Confirm that **every other line** in the `AgentMemory(...)` constructor — `user_id`, `openai_client`, `config` — is identical to what you would write for `DatabaseType.SQLITE`. The only change is one argument.
-
-1. This is what makes Cosmos DB the right intermediate step:
-
-   - You write your agent code against the local SQLite backend — no cloud costs, instant feedback.
-   - When you are ready to deploy, you change **one line** to `db_type=DatabaseType.COSMOSDB` and provide credentials.
-   - Your agent code, memory logic, session management, and insight curation all continue working unchanged.
-
-1. Confirm this by locating the SQLite initialization from Exercise 1's notebook (**01_basic_memory.ipynb**, Cell 2) alongside the Cosmos DB initialization in this exercise — place them side by side in split view (**right-click the tab → Split Right**) and verify that the only difference is the `db_type` argument and the Cosmos DB connection string.
-
 ## 🧾 Summary
 
-In this exercise, you accomplished the following:
-
-- Understood the difference between the four supported backends (SQLite, Cosmos DB, Azure AI Search, PostgreSQL) and when to choose each one
-- Verified the Cosmos DB endpoint and key in your `.env` file and navigated to the pre-provisioned Cosmos DB account in the Azure Portal
-- Ran the `04_cosmosdb.ipynb` notebook and observed the three-session financial advisor scenario with cloud-backed memory — watching the `Memory context loaded` size grow from Session 1 to Session 3 as Sarah's profile accumulated
-- Confirmed persistence was real by browsing the `interactions`, `session_summaries`, and `insights` containers in Data Explorer, inspecting the raw JSON documents, and verifying that a fresh kernel restart could still recall Sarah's risk tolerance from Cosmos DB
-- Ran the `09_itemized_insights_cosmos.ipynb` notebook and observed the bounded memory system — six simulated monthly sessions, a hard cap of `MAX_INSIGHTS = 5`, and the pruning function removing lower-scored insights from Cosmos DB in real time, with the scoring driven by recency, frequency of citation, and forgetting decay
-- Confirmed in Data Explorer that exactly 5 (or fewer) insight documents remained after the bounded demo, proving that pruning is a real cloud database operation — not just a display filter
-- Verified that switching from SQLite to Cosmos DB requires changing exactly one argument (`db_type=DatabaseType.COSMOSDB`) with all agent and memory logic unchanged
+In this exercise, you explored how Agent Memory uses **Azure Cosmos DB** as a cloud-backed storage backend, compared it with the other supported storage options, and verified the required connection settings. You ran the financial advisor demo to observe cross-session memory persistence, validated the stored conversations, summaries, and insights directly in the Azure Portal, and confirmed that memory remains available across notebook executions. You then explored bounded long-term memory by running the insight curation demo, observing how insights are ranked, retained, and pruned to maintain a maximum of five high-value memories. Finally, you verified that migrating from SQLite to Azure Cosmos DB requires only a backend configuration change, while the agent behavior and memory logic remain unchanged.
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
 

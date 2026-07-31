@@ -10,13 +10,9 @@ In this exercise, you will act as an AI Engineer responsible for studying how **
 
 ## 📖 Overview
 
-In this exercise, you will review the Microsoft Agent Framework integration pattern used by the repository, run multiple notebooks from the preloaded project, and compare two different approaches to memory retrieval:
+In this exercise, you will explore advanced Agent Memory integration patterns by running a series of preconfigured notebooks from the lab repository. You will see how memory can be managed automatically through the Agent Framework, explicitly controlled by the agent using memory tools, and continuously refined into an evolving long-term user profile.
 
-- Framework-managed context injection with `context_providers=[memory]`
-- Agent-driven retrieval, where the agent explicitly calls memory tools when it decides a lookup is needed
-- Insight curation that turns repeated sessions into durable, evolving profile knowledge
-
-You will work entirely from the prepared lab VM and the repository that was staged during deployment.
+Throughout the exercise, you will compare framework-managed context injection with agent-driven memory retrieval, observe how conversation history is carried across sessions, and learn how insight curation resolves conflicting information to keep user profiles accurate and up to date. All activities are performed using the preconfigured lab VM and the repository provided during deployment.
 
 ## 🎯 Objectives
 
@@ -29,111 +25,89 @@ In this exercise, you will perform:
 
 ## Task 1: Study the Integration Pattern
 
-In this task, you will open the Agent Framework notebook and inspect how `AgentMemory` is registered as a context provider inside the Agent Framework, identifying the lifecycle hooks that make memory automatic.
+In this task, you will examine how Agent Memory integrates with the Microsoft Agent Framework by registering `AgentMemory` as a context provider. You will explore how the framework automatically retrieves previous conversation context and stores new interactions through its built-in lifecycle hooks.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **02_agent_framework.ipynb (2)** notebook.
 
    ![](./Images/ETS211.png)
 
-1. Take a moment to read the first markdown cell, **"Agent Framework + AgentMemory Integration"**. It introduces the three key concepts you will observe in this exercise:
+1. Take a moment to read the first markdown cell, **"Agent Framework + AgentMemory Integration"**.
 
    ![](./Images/ETS244.png)
 
-   - **ContextProvider pattern** — memory is passed as `context_providers=[memory]` to the Agent, so no manual `add_turn()` or `store_response()` calls are needed.
-   - **Automatic context injection** — `before_run()` is called automatically when the agent processes a query, loading previous conversation context and the long-term profile.
-   - **Automatic turn capture** — `after_run()` is called automatically after the agent responds, storing the new turn back into memory.
+   >**Important:** It introduces the three key concepts demonstrated in this exercise.
+   > - **ContextProvider pattern** — Agent Memory is passed to the agent through `context_providers=[memory]`, eliminating the need to manually manage conversation history.
+   > - **Automatic context injection** — `memory.before_run()` is invoked automatically before each agent response to load previous conversation context and the user's long-term profile.
+   > - **Automatic turn capture** — `memory.after_run()` is invoked automatically after each response to store the latest conversation turn in memory.
 
-1. Scroll to the first code cell (**Step 1–6: Setup, Configuration & Agent Initialization**) and read it without running it yet. Locate the following integration points:
+1. Scroll to the first code cell (**Steps 1–6: Setup, Configuration & Agent Initialization**) and review the code without executing it.
 
-   - The **environment validation block**, which checks `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_REASONING_MODEL`, and `AZURE_OPENAI_EMB_DEPLOYMENT`.
+   ![](./Images/ETS211new.png)
 
-      ![](./Images/ETS214.png)
+1. The **environment validation** section, which verifies the required Azure OpenAI configuration values: `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_REASONING_MODEL`, and `AZURE_OPENAI_EMB_DEPLOYMENT`.
 
-   - The **AgentMemoryConfig** block — note `auto_enrich_context=True` (automatic context injection is ON) and the `enrichment_trigger_keywords` list (words like "remember", "previous", "last time" that signal the user is referencing the past).
+   ![](./Images/ETS214.png)
 
-      ![](./Images/ETS215.png)
-      
-   - The **agent construction** at the bottom of the cell — find the key line:
+1. The **AgentMemoryConfig** section. Notice that `auto_enrich_context=True` enables automatic context injection, while `enrichment_trigger_keywords` contains keywords such as **remember**, **previous**, and **last time** that indicate the user is referring to earlier conversations.
 
-     ```
-     agent = Agent(
-         client=chat_client,
-         instructions="...",
-         tools=[get_401k_limit, get_roth_ira_limit],
-         context_providers=[memory],
-     )
-     ```
+   ![](./Images/ETS215.png)
 
-1. Verify the three integration points directly in the code:
+1. The **Agent** initialization section. Notice that **Agent Memory** is integrated with the agent as a **context provider**, enabling automatic retrieval of previous conversation context before each response and automatic storage of new conversation turns after each interaction.
 
-   - **Which object supplies prior context to the agent:** it is the `memory` object (`AgentMemory`) — confirm it is the only item in the `context_providers=[memory]` list of the `Agent(...)` constructor.
-   - **When context is loaded:** scroll to the docstring of the `run_session` helper in the next code cell — it states that `agent.run()` calls `memory.before_run()` internally, so context is injected **before** the model generates each response.
-   - **When new turns are written back:** the same docstring shows `agent.run()` calls `memory.after_run()` internally after the response, so every turn is stored **automatically after** each reply — with no `add_turn()` call anywhere in the notebook. Press **CTRL + F** and search the notebook for `add_turn` to confirm there are zero matches in the conversation flow.
+   ![](./Images/ETS212new.png)
 
-1. Compare this structure with what you saw in Exercise 1. Notice that the application code is no longer manually orchestrating every retrieval step; instead, memory participates as a context provider around the agent's run lifecycle.
+1. Press **CTRL + F**, search for **`add_turn`**, and verify that there are no matches inside the notebook cells, confirming that conversation turns are automatically stored by the Agent Framework instead of using manual memory API calls.
+
+1. **Direct Agent Memory** vs **Agent Framework Integration**
+
+| Direct Agent Memory | Agent Framework Integration |
+|---------------------|-----------------------------|
+| Manual `add_turn()` | Automatic `after_run()` |
+| Manual `get_context()` | Automatic `before_run()` |
+| Direct AgentMemory APIs | ContextProvider pattern |
+| Manual memory lifecycle | Automatic memory lifecycle |
 
 ## Task 2: Run the Financial Advisor Demo
 
-In this task, you will execute the Agent Framework notebook and observe how memory from one session automatically influences later sessions, with no manual memory calls anywhere in the conversation code.
+In this task, you will run the Agent Framework notebook and observe how Agent Memory automatically retrieves previous conversation context and stores new interactions across multiple sessions, without requiring any manual memory operations in the application code.
 
 1. In the **02_agent_framework.ipynb** notebook, click **Select Kernel (1)** in the top-right corner and choose **agent-memory(3.12.X)(Python 3.12.X) (2)** if prompted.
 
    ![](./Images/ETS245.png)
 
-1. Run the first code cell (**Step 1–6: Setup, Configuration & Agent Initialization**). This cell performs the complete initialization:
+1. **Run** the first code cell under **Steps 1–6: Setup, Configuration & Agent Initialization**. This cell prepares the notebook by loading the project configuration, validating the required Azure OpenAI environment variables, creating the local SQLite database, initializing **Agent Memory**, and configuring the financial advisor agent with its tools and automatic memory integration.
 
    ![](./Images/ETS241.png)
 
-   - **Finds the project root** and loads your `.env` file.
-   - **Validates the four required environment variables** and prints a ✅/❌ status for each.
-   - **Defines the demo identifiers**: `USER_ID = "sarah_demo"` and the SQLite database `demo_financial_advisor.db`, deleting any previous copy for a clean run.
-   - **Defines two lightweight financial tools** the agent can call: `get_401k_limit(year)` and `get_roth_ira_limit(year)`.
-   - **Creates the Azure OpenAI client**, the **AgentMemoryConfig** (with `auto_enrich_context=True` and `longterm_synthesis_frequency=1` so the profile updates after every session), and initializes **AgentMemory**.
-   - **Creates the Agent** with `context_providers=[memory]` — the single line that makes all memory management automatic.
+1. After the cell executes successfully, verify that the output confirms the environment configuration, Agent Memory initialization, and agent creation, and that it ends with the message **`✅ INITIALIZATION COMPLETE - Agent ready for conversations!`**, as shown in the following image.
 
-   You should see the output ending with: `✅ INITIALIZATION COMPLETE - Agent ready for conversations!`
+   ![](./Images/ETS222.png)
 
-      ![](./Images/ETS222.png)
+1. **Run** the first code cell under **"Step 7–8: Run Three-Session Demo"**. This demonstration simulates three conversations with the financial advisor agent, showing how **Session 1** builds Sarah's profile, **Session 2** automatically recalls information from the previous session, and **Session 3** uses the accumulated knowledge to provide more personalized responses.
 
-1. Read the next markdown cell, **"Step 7–8: Run Three-Session Demo"** — it previews what each session will demonstrate: Session 1 builds Sarah's profile, Session 2 recalls it automatically, and Session 3 uses the accumulated knowledge.
+   ![](./Images/ETS242.png)
 
-1. Run the next code cell (**Step 7–8: Run Three-Session Demo**). This cell runs the full multi-session scenario:
-
-      ![](./Images/ETS242.png)
-
-   - **Session 1 (Initial Consultation):** Sarah introduces herself — 35 years old, software engineer, $150,000/year, moderate-to-high risk tolerance, 30 years to retirement, employer 401k with 4% match. Watch the memory context line print `No previous memory - First session!`
-   - **Session 2 (Investment Strategy):** the user asks *"Based on what we discussed before, what asset allocation do you recommend?"* — watch the `📚 Memory context loaded` line at session start: the agent receives Sarah's profile automatically before answering.
-   - **Session 3 (Tax Planning):** the user asks about tax optimization *"given my income and the retirement accounts we discussed"* — the agent uses knowledge accumulated across both earlier sessions.
-   - After each session ends, note the `💡 Insights extracted` count — ending a session triggers reflection and profile updates automatically.
+1. After the code cell executes successfully, verify that the output shows **`✅ ALL SESSIONS COMPLETE`**, followed by the three-session summary. Also, observe the **`💡 Insights extracted`** count after each session, confirming that Agent Memory automatically reflects on the conversation and updates the user's long-term profile.
 
    ![](./Images/ETS224.png)
 
-1. Verify that Session 2 and Session 3 reference information established earlier (age, income, risk tolerance, time horizon) rather than behaving like a stateless first-time conversation.
+1. Review the outputs from **Session 2** and **Session 3** and verify that the agent automatically recalls information established in **Session 1**, rather than responding as if it were a new conversation.
 
-1. Locate at least two concrete examples of recalled information in the output:
-
-   - In the **Session 2** output, find the agent referencing Sarah's **risk tolerance** or **30-year time horizon** (stated only in Session 1) when recommending an asset allocation.
+1. In the output, identify examples of this memory recall. In **Session 2**, observe the agent referencing Sarah's **risk tolerance** or **30-year time horizon** when recommending an investment strategy. In **Session 3**, observe the agent using Sarah's **$150,000 income** or the **retirement accounts discussed earlier** when providing tax optimization advice.
 
    ![](./Images/ETS225.png)
-
-   - In the **Session 3** output, find the agent referencing Sarah's **$150,000 income** or the **retirement accounts discussed earlier** when giving tax optimization advice.
 
    ![](./Images/ETS226.png)
 
    >**Note**: To verify the complete output block, scroll down to the end of the output and click on **scrollable element**.
 
-1. Run the final code cell (**Step 9–10: Inspect Memory & Cleanup**). This cell verifies what was stored:
+1. Run the final code cell under **Step 9–10: Inspect Memory & Cleanup**. This cell inspects the stored memory by performing a semantic search, displaying the user's long-term profile and recorded session summaries, and then cleans up the demo environment by closing the memory connection and removing the local SQLite database.
 
-   ![](./Images/ETS243.png)   
+   ![](./Images/ETS243.png)
 
-   - **Memory search test** — runs `memory.search("What is Sarah's risk tolerance?")` and prints the semantically retrieved answer.
-   - **Sessions list** — `memory.get_sessions()` should show all three sessions with their generated summaries.
-   - **Extracted insights** — `memory.get_insights()` prints what the system learned about Sarah, each with a category and confidence score.
-   - **Cleanup** — closes the memory connection and deletes the demo database.
+1. After the code cell executes successfully, verify that the **Memory Search Test** runs `memory.search("What is Sarah's risk tolerance?")` and successfully retrieves Sarah's previously stored information. Also, verify that the output displays the long-term profile and recorded session summaries, confirming that Agent Memory automatically stored, retrieved, and managed conversation history throughout the demo.
 
-   ![](./Images/ETS228.png)    
-
-1. Confirm in the final output that the pattern held end to end: three sessions recorded, insights extracted for Sarah's demographics, risk tolerance, and goals — all without a single manual `add_turn()`, `store_response()`, or `get_context()` call in the conversation code. This is why the pattern suits scenarios like a financial advisor, where preferences, goals, and risk posture must persist across many interactions automatically.
+   ![](./Images/ETS228.png)
 
 ## Task 3: Compare Agent-Driven Memory Retrieval
 
@@ -150,71 +124,49 @@ In this task, you will run the agent-driven notebook, where automatic context in
 
    ![](./Images/ETS232.png)
 
+1. Scroll down into the notebook and review the **AgentMemoryConfig** section and notice that `auto_enrich_context=False` disables automatic context injection. Unlike the previous notebook, the agent does not automatically receive previous conversation context and must explicitly retrieve it using memory tools.
+
+   ![](./Images/ETS236.png)
+
 1. In the **03_agent_driven.ipynb** notebook, click **Select Kernel (1)** in the top-right corner and choose **agent-memory(3.12.X)(Python 3.12.X) (2)** if prompted.
 
    ![](./Images/ETS233.png)
 
-1. Run the first code cell (**Step 1: Setup, Imports & Configuration**).
+1. Run the first code cell under **Step 1: Setup, Imports & Configuration**. This cell prepares the demo environment by loading the project configuration, validating the Azure OpenAI settings, creating the Agent Memory configuration with **automatic context enrichment disabled**, and initializing the Agent Memory instance for the agent-driven memory demonstration.
 
    ![](./Images/ETS246.png)
 
-1. Note the one critical difference from the previous notebook:
+1. After the code cell executes successfully, verify that the output ends with **`✅ Step 1 Complete: Environment configured`** and confirms that Agent Memory was initialized with **auto-enrichment disabled**.
 
-   ```
-   config = AgentMemoryConfig(
-       auto_enrich_context=False,
-       auto_manage_sessions=False,
-       longterm_synthesis_frequency=1,
-   )
-   ```
+   ![](./Images/ETS235.png)
 
-      ![](./Images/ETS236.png)
-
-   **`auto_enrich_context=False`** — automatic injection is disabled. The agent will only see past information if it explicitly searches for it. This cell also sets `USER_ID = "patient_demo"` and creates the `demo_agent_driven_memory.db` database.
-
-   You should see the output ending with: `✅ Step 1 Complete: Environment configured`
-
-   ![](./Images/ETS235.png)   
-
-1. Run the next code cell (**Step 2: Create Memory Tools & Agent With Explicit Memory Control**). This cell gives the agent its explicit memory tools:
+1. Run the next code cell under **Step 2: Create Memory Tools & Agent with Explicit Memory Control**. This cell creates the **`search_memory()`** and **`get_patient_profile()`** tools, configures the Azure OpenAI chat client, and initializes the agent with explicit memory tools instead of automatic context injection.
 
    ![](./Images/ETS247.png)
 
-   - **`search_memory(query)`** — searches the patient's history across interactions, insights, and summaries. Its tool description instructs the agent: *"CRITICAL: Always search before prescribing medications or making recommendations!"*
-   - **`get_patient_profile()`** — retrieves the synthesized patient profile built from all past sessions.
-   - The agent is then created with `tools=[search_memory, get_patient_profile]` — and **no** `context_providers`.
-
-   You should see the output ending with: `✅ Step 2 Complete: Agent ready with memory control`
+1. After the code cell executes successfully, verify that the output confirms the memory tools were created, the agent was initialized with explicit memory control, and the message **`✅ Step 2 Complete: Agent ready with memory control`** is displayed.
 
    ![](./Images/ETS239.png)
 
-1. Run the next code cell (**Step 3: Run Three-Session Medical Demo**). Watch each session carefully:
+1. Run the next code cell under **Step 3: Run Three-Session Medical Demo**. This cell runs a three-session conversation where the agent uses its memory tools to decide when to retrieve the patient's medical history before responding.
 
    ![](./Images/ETS248.png)
 
-   - **Session 1 (Initial Consultation):** the patient discloses a **severe penicillin allergy with anaphylaxis history**. The system stores this.
-   - **Session 2 (Routine Follow-up):** a simple blood pressure check — the allergy is not mentioned, and a memory search is optional here.
-   - **Session 3 (THE CRITICAL TEST):** the patient says *"I have a really bad sinus infection. I think I need antibiotics."* — **without mentioning the allergy**. Watch the output for a `🔍 [Agent Tool] search_memory(...)` line: the agent must proactively decide to search memory for allergies before recommending any antibiotic.
+1. After the code cell executes successfully, verify that all three sessions complete successfully and the output ends with **`✅ Step 3 Complete: Multi-session demo finished`**.
 
-   ![](./Images/ETS2310.png)   
+   ![](./Images/ETS2310.png) 
 
-1. Verify in the Session 3 output that the agent invoked `search_memory` and that its response accounts for the penicillin allergy from Session 1.
+1. Verify in the **Session 3** output that the agent explicitly invokes the **`search_memory`** tool to retrieve the patient's severe penicillin allergy from **Session 1** before providing medical guidance.
 
-   ![](./Images/ETS2312.png)   
+   ![](./Images/ETS2312.png)
 
-1. Run the final code cell (**Step 4: Inspect Final Memory State & Key Learnings**). 
+1. Run the final code cell **Step 4: Inspect Final Memory State & Key Learnings**. 
 
    ![](./Images/ETS249.png) 
 
 1. This cell prints the extracted insights (the allergy should appear with its category and confidence), the three recorded sessions with summaries, a semantic search test for `"patient allergies medications"`, and then cleans up the database.
 
    ![](./Images/ETS2314.png) 
-
-1. Compare the two notebooks side by side by locating the concrete evidence of each pattern:
-
-   - Open both notebooks in split view (right-click the **03_agent_driven.ipynb** tab and select **Split Right**).
-   - In **02_agent_framework_condensed.ipynb**, observe that memory access is **invisible** in the session output — context simply appears in the `📚 Memory context loaded` line, with no tool calls shown. This is what "automatic" looks like: convenient, but you cannot see when or why memory was consulted.
-   - In **03_agent_driven.ipynb**, observe the explicit `🔍 [Agent Tool] search_memory('...')` lines in the Session 3 output — every memory access is visible, logged, and attributable to an agent decision. This is what makes the agent-driven pattern easier to debug: if context was not recalled, the missing tool call shows you exactly where the failure happened.
 
 1. Review the following comparison of the two patterns, and verify each row against what you observed in the outputs:
 
@@ -231,97 +183,65 @@ In this task, you will run the insight curation notebook and observe how repeate
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **06_insight_curation.ipynb (2)** notebook
 
-   ![](./Images/ETS411.png)
+   ![](./Images/ETS2311.png)
 
-1. Read the first markdown cell, **"Insight Curation Demo: Contradiction Resolution & Profile Evolution"**.
+1. Read the first markdown cell, **"Insight Curation Demo: Contradiction Resolution & Profile Evolution"**. It demonstrates how Insight Curation updates a user's long-term profile when preferences change over time—for example, evolving from avoiding stocks to preferring an aggressive investment strategy—instead of storing conflicting insights.
 
    ![](./Images/ETS418.png)
 
- It frames the core problem this notebook solves:
+1. In the **06_insight_curation.ipynb** notebook, click **Select Kernel (1)** in the top-right corner and choose **agent-memory(3.12.X)(Python 3.12.X) (2)** if prompted.
 
-   - Session 1 stores *"User avoids stocks completely due to 2008 trauma"*.
-   - Session 2 stores *"User is now aggressive — 90% stocks"*.
-   - A naive system keeps both contradictory insights forever; a curated system **resolves** them into an evolution narrative: *"User WAS conservative, is NOW aggressive."*
+   ![](./Images/ETS231new.png)
 
-1. Run the first code cell (**Step 1: Environment Setup & Configuration**).
+1. Run the first code cell **Step 1: Environment Setup & Configuration**. This cell loads the environment variables, initializes Agent Memory, creates the SQLite database (`demo_insight_curation.db`), and configures **`longterm_synthesis_frequency=1`** so that the long-term profile is synthesized after every session, enabling the system to detect and resolve conflicting insights across sessions.
 
    ![](./Images/ETS413.png)
 
-   Note the key configuration:
+1. After the cell executes successfully, verify that the output confirms the environment configuration and ends with **`✅ Step 1 Complete: Environment configured`**
 
-   ```
-   config = AgentMemoryConfig(
-       buffer_size=6,
-       longterm_synthesis_frequency=1,
-   )
-   ```
+   ![](./Images/ETS414.png)
 
-   **`longterm_synthesis_frequency=1`** — the profile is synthesized after **every** session (rather than every few sessions), which is what enables contradiction detection between Session 1 and Session 2. This cell uses `USER_ID = "evolving_user_demo"` and the `demo_insight_curation.db` database.
+1. Run the next code cell **Step 2: Run Two Simulated Sessions – Demonstrating Profile Evolution**. This cell simulates two user sessions with changing investment preferences to demonstrate how Insight Curation detects and resolves contradictory information by updating the user's long-term profile.
 
-   You should see the output ending with: `✅ Step 1 Complete: Environment configured`
+   ![](./Images/ETS415.png)
 
-      ![](./Images/ETS414.png)
+1. After the cell executes successfully, review the output and observe how the user's profile evolves from a conservative investor in **Session 1** to an aggressive investor in **Session 2**. Verify that the **Profile Evolution Summary** indicates the contradiction was resolved and that the output ends with **`✅ Step 2 Complete: Profile evolution demonstrated`**
 
-1. Run the next code cell (**Step 2: Run Two Simulated Sessions - Demonstrating Profile Evolution**). 
+   ![](./Images/ETS416.png)
 
-      ![](./Images/ETS415.png)
+1. Read the next markdown cell, **"Step 3: Run Verification Session with Real LLM"**, and then run the code cell. This cell simulates a new investment scenario, retrieves Alex's curated long-term profile, and verifies that the LLM generates its recommendation based on the user's updated investment preference rather than the earlier conservative profile.
 
-   This cell replays two pre-scripted sessions for a user named Alex:
+   ![](./Images/ETS419.png)
 
-   - **Session 1 (Risk-Averse Beginner):** Alex is a new graduate making $55,000, traumatized by watching his family lose money in 2008 — *"No stocks ever. Just bonds and savings accounts for me."*
-   - **Session 2 (Two Years Later — the CONTRADICTION):** Alex got promoted to $120,000, has a year of expenses saved, and now wants to be *"AGGRESSIVE — 90% stocks"*, seeing market drops as *buying opportunities*.
-   - Watch the output banner between the sessions explicitly warning: *"Contradiction coming in next session... System must resolve this contradiction!"* — and the Profile Evolution Summary at the end: `WAS conservative → NOW aggressive, Status: Contradiction RESOLVED by system`.
+1. After the cell executes successfully, verify that the output indicates the model used Alex's updated aggressive investment profile and that the verification completes successfully. The output should end with:
 
-   You should see the output ending with: `✅ Step 2 Complete: Profile evolution demonstrated`.
+   - **`✅ YES - Profile was used! Agent knows current stance.`**
+   - **`✅ VERIFICATION COMPLETE`**
+   - **`✅ Step 3 Complete: Profile evolution verified with real LLM`**
 
-      ![](./Images/ETS416.png)
+   ![](./Images/ETS4111.png)
 
-1. Read the next markdown cell, **"Step 3: Run Verification Session with Real LLM"** and run the code cell.
-
-      ![](./Images/ETS419.png)
-
-   This cell runs a genuine LLM call:
-   - **The scenario:** Alex received a $10,000 bonus, and his dad is advising him to *"put it all in a savings account because the market has been volatile."*
-   - **The test:** the notebook retrieves the evolved profile via `get_context()`, injects it into the system prompt, and asks the real model for advice.
-   - **Success looks like:** the response references Alex's current aggressive 90%-stock stance and treats volatility as opportunity. **Failure looks like:** the response sides with the dad's conservative advice — meaning the old Session 1 profile leaked through.
-
-1. Verify in the output which profile the model used, and note the success/failure indicators the cell prints.
-
-      ![](./Images/ETS4111.png)
-
-1. Run the final code cell (**Step 4: Final Analysis & Key Learnings**).
+1. Run the final code cell **Step 4: Final Analysis & Key Learnings**.
 
       ![](./Images/ETS4110.png)
 
 
-   This cell categorizes the stored insights into **conservative**, **aggressive**, and **evolution/change** buckets, prints an explicit contradiction-resolution analysis, and cleans up the memory connection and database.
+1. This cell categorizes the stored insights into **conservative**, **aggressive**, and **evolution/change** buckets, prints an explicit contradiction-resolution analysis, and cleans up the memory connection and database.
 
       ![](./Images/ETS4112.png)
 
-1. Verify the curation behavior directly in the final analysis output:
+1. Review the four memory patterns demonstrated across the lab and identify where each one was implemented:
 
-   - **What survives beyond a single session:** in the `💡 Insights Extracted` list, confirm that durable facts about Alex (income level, risk stance, investment goals) are present — while conversational filler from the sessions is not.
-   - **Why repeated background questions are avoided:** in the Step 3 verification output, confirm the `📚 PROFILE CONTEXT PROVIDED TO LLM` block already contained Alex's situation — the model never had to ask his age, income, or risk tolerance again.
-   - **The risk of stale insights:** in the `🔍 PROFILE CONTRADICTION ANALYSIS`, confirm the system reports both conservative and aggressive insights but merged them into an evolution narrative — if the outdated Session 1 insight had been retained as-is, the verification session would have produced the conservative (wrong) advice.
-
-1. Review the full progression you have now demonstrated across both exercises, verifying you can point to where each pattern appeared:
-
-   - **Direct memory usage** (Exercise 1) — manual `add_turn()` and `get_context()` calls in `01_basic_memory.ipynb`.
-   - **Framework-integrated memory** (Task 2.2) — `context_providers=[memory]` with automatic `before_run()`/`after_run()` hooks.
-   - **Agent-driven retrieval** (Task 2.3) — explicit `search_memory` tool calls visible in the output.
-   - **Long-term insight curation** (this task) — contradiction resolution and profile evolution with `longterm_synthesis_frequency=1`.
-
-   You will use the same mental model again when you move into cloud-backed persistence and bounded long-term memory in later exercises.
+   - **Direct memory usage** — manual memory operations.
+   - **Framework-integrated memory** — automatic context management through the Agent Framework.
+   - **Agent-driven memory retrieval** — explicit memory searches initiated by the agent.
+   - **Long-term insight curation** — profile evolution and contradiction resolution through long-term synthesis.
 
 ## 🧾 Summary
 
-In this exercise, you accomplished the following:
+In this exercise, you explored three different approaches to integrating Agent Memory with AI agents. You examined the Agent Framework integration, where memory is managed automatically through lifecycle hooks, and verified that conversation context persisted seamlessly across multiple sessions without requiring manual memory operations. You also explored the agent-driven approach, where the agent explicitly invokes memory tools to retrieve relevant information only when needed.
 
-- Opened the `02_agent_framework.ipynb` notebook and inspected the Agent Framework integration, identifying `context_providers=[memory]` and the `before_run()`/`after_run()` lifecycle hooks
-- Ran the three-session financial advisor demo and verified automatic cross-session recall of Sarah's profile (age, income, risk tolerance, time horizon) with zero manual memory calls
-- Ran the agent-driven notebook with `auto_enrich_context=False`, observed the agent explicitly invoking the `search_memory` tool, and validated the safety-critical scenario where the agent recalled a penicillin allergy before an antibiotic recommendation
-- Compared the framework-managed and agent-driven patterns across convenience, transparency, debuggability, and best-fit scenarios
-- Ran the insight curation notebook and observed contradiction resolution and profile evolution (conservative → aggressive), verified with a real LLM call that the evolved profile drives personalized responses
+Finally, you demonstrated long-term insight curation by observing how the system resolves contradictory user information and evolves a user's profile over time. By verifying the updated profile with a real LLM, you confirmed that synthesized long-term insights are used to generate more accurate, personalized, and context-aware responses across future conversations.
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
 
