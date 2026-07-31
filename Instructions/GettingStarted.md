@@ -1,6 +1,6 @@
 # Advanced Dynamic Memory Architecture — Agent Memory
 
-### Overall Estimated Duration: 8 Hours
+### Lab Duration: 8 Hours
 
 ## 📘 Lab Scenario
 
