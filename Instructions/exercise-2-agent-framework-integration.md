@@ -172,12 +172,6 @@ In this task, you will run the agent-driven notebook, where automatic context in
 
    ![](./Images/ETS2314.png) 
 
-1. Compare the two notebooks side by side by locating the concrete evidence of each pattern:
-
-   - Open both notebooks in split view (right-click the **03_agent_driven.ipynb** tab and select **Split Right**).
-   - In **02_agent_framework_condensed.ipynb**, observe that memory access is **invisible** in the session output — context simply appears in the `📚 Memory context loaded` line, with no tool calls shown. This is what "automatic" looks like: convenient, but you cannot see when or why memory was consulted.
-   - In **03_agent_driven.ipynb**, observe the explicit `🔍 [Agent Tool] search_memory('...')` lines in the Session 3 output — every memory access is visible, logged, and attributable to an agent decision. This is what makes the agent-driven pattern easier to debug: if context was not recalled, the missing tool call shows you exactly where the failure happened.
-
 1. Review the following comparison of the two patterns, and verify each row against what you observed in the outputs:
 
    | Pattern | Strength | Trade-off | Best-fit scenario |
