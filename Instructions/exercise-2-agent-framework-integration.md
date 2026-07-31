@@ -10,13 +10,9 @@ In this exercise, you will act as an AI Engineer responsible for studying how **
 
 ## 📖 Overview
 
-In this exercise, you will review the Microsoft Agent Framework integration pattern used by the repository, run multiple notebooks from the preloaded project, and compare two different approaches to memory retrieval:
+In this exercise, you will explore advanced Agent Memory integration patterns by running a series of preconfigured notebooks from the lab repository. You will see how memory can be managed automatically through the Agent Framework, explicitly controlled by the agent using memory tools, and continuously refined into an evolving long-term user profile.
 
-- Framework-managed context injection with `context_providers=[memory]`
-- Agent-driven retrieval, where the agent explicitly calls memory tools when it decides a lookup is needed
-- Insight curation that turns repeated sessions into durable, evolving profile knowledge
-
-You will work entirely from the prepared lab VM and the repository that was staged during deployment.
+Throughout the exercise, you will compare framework-managed context injection with agent-driven memory retrieval, observe how conversation history is carried across sessions, and learn how insight curation resolves conflicting information to keep user profiles accurate and up to date. All activities are performed using the preconfigured lab VM and the repository provided during deployment.
 
 ## 🎯 Objectives
 
@@ -29,7 +25,7 @@ In this exercise, you will perform:
 
 ## Task 1: Study the Integration Pattern
 
-In this task, you will open the Agent Framework notebook and inspect how `AgentMemory` is registered as a context provider inside the Agent Framework, identifying the lifecycle hooks that make memory automatic.
+In this task, you will examine how Agent Memory integrates with the Microsoft Agent Framework by registering `AgentMemory` as a context provider. You will explore how the framework automatically retrieves previous conversation context and stores new interactions through its built-in lifecycle hooks.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **02_agent_framework.ipynb (2)** notebook.
 
