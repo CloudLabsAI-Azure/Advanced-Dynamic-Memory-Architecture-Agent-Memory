@@ -183,6 +183,8 @@ In this task, you will install the project dependencies, open the `01_basic_memo
 
    ![](./Images/ETS1312.png)
 
+   > **Note:** The sessions are pre-scripted so the demo runs without user input and completes in under two minutes. You are observing what the system *does* with those conversations, not having a live chat.
+
 1. After the cell executes successfully, verify that the output shows the conversation session has started, the buffer configuration has been applied, and the conversation turns are being processed, as shown in the following image.
 
    ![](./Images/ETS1313.png)

@@ -2,7 +2,7 @@
 
 ### Estimated Duration: 75 Minutes
 
-## Scenario
+## 📘 Scenario
 
 In the previous five exercises you ran pre-built demos, watched memory accumulate, and used the Streamlit UI to visualise what the system produced. In this exercise you stop following pre-written scripts and build something yourself.
 
@@ -13,28 +13,11 @@ By the end of this exercise you will have:
 - An explicit memory retrieval tool you wrote yourself, wired to your agent
 - A verification report confirming sessions, insights, and cross-session context all work end to end
 
----
+## 📖 Overview
 
-## Overview
+In this exercise, you will build your own Agent Memory application by combining pre-written framework components with your own implementation. The notebook contains eight cells: four pre-written cells that handle the environment setup, agent initialization, and verification, and four **"Your Choice"** cells where you will design the scenario, configure the memory settings, define the conversation, and implement explicit memory retrieval. By the end of the exercise, you will have created and tested a personalized multi-session Agent Memory application while applying the concepts learned throughout the previous exercises.
 
-```
-What you build in this exercise:
-─────────────────────────────────────────────────────────────────
-  Cell 1  Imports and environment setup (pre-written — just run)
-  Cell 2  YOUR CHOICE: scenario, user ID, agent persona
-  Cell 3  Tune AgentMemoryConfig parameters
-  Cell 4  Agent class (pre-written — just run)
-  Cell 5  YOUR CHOICE: Session 1 conversation turns
-  Cell 6  YOUR CHOICE: Explicit memory retrieval tool + test query
-  Cell 7  YOUR CHOICE: Session 2 conversation turns
-  Cell 8  Verification report (pre-written — just run)
-─────────────────────────────────────────────────────────────────
-
-Four "YOUR CHOICE" cells → you own them.
-Four pre-written cells → just run them.
-```
-
-## Objectives
+## 🎯 Objectives
 
 - Task 1: Set up and choose your scenario
 - Task 2: Run Session 1 and establish facts
@@ -59,9 +42,9 @@ Before picking, read the table below. The choice determines what facts your agen
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and and open **10_capstone_my_agent.ipynb (2)**.
 
-   ![](./Images/ETS.png)
+   ![](./Images/ETS511new.png)
 
-1. Click **Select Kernel (1)** in the top-right corner and select the project's virtual environment, for example **.venv (Python 3.12.x) (2)**.
+1. Click **Select Kernel (1)** in the top-right corner and choose **agent-memory(3.12.X)(Python 3.12.X) (2)** if prompted.
 
    ![](./Images/ETS611.png)
 
@@ -77,7 +60,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS613.png)
 
-1. Run **Cell 2 — Configure Your Agent**. Read the reference block for your chosen scenario, then paste it into the `# YOUR CHOICE:` section of the cell, replacing the three `'___'` placeholders **(1)** and click on **Run (2)**.
+1. Run **Cell 2 — Configure Your Agent**. Read the reference block for your chosen scenario, then paste it into the `# YOUR CHOICE:` section of the cell, replacing the three placeholders **(1)** and click on **Run (2)**.
 
    For **Scenario A** (IT Help Desk), paste below script:
    <details>
@@ -135,7 +118,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS616.png)
 
-   >**Note:** in this lab guide we are using scenario A which is IT Help Desk and following images are also updated as per that scenario.
+   >**Note:** in this lab guide we are using scenario **A** which is IT Help Desk and following images are also updated as per the scenario **A**.
 
 1. You will get the expected output as show in below image
 
@@ -147,16 +130,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    The default values work for this lab session. You do not need to change them now. After you get a working result in Task 4, you are encouraged to come back and change `buffer_size` from `4` to `2` and re-run to observe earlier compression.
 
-   **Expected output:**
-   ```
-   ✅ Azure OpenAI client created
-   ✅ Memory config created
-      DB path:              ...\capstone_a_helpdesk-user-001.db
-      Buffer size:          4 turns before compression
-      Active turns kept:    2
-      Auto-enrich:          True
-      Synthesis frequency:  every 1 session(s)
-   ```
+1. You will get the expected output as show in below image
 
    ![](./Images/ETS619.png)
 
@@ -164,27 +138,13 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS6110.png)
 
-   **Expected output:**
-   ```
-   ✅ MyAgent created
-      Model: gpt-5.1
-   ```
+1. You will get the expected output as show in below image
 
    ![](./Images/ETS6111.png)
 
 ## Task 2: Run Session 1 and Establish Facts
 
 In this task, you will fill in your Session 1 conversation turns and run them through your agent. The goal is to establish **3–4 specific, memorable facts** that your agent should be able to recall in Session 2 without the user repeating them.
-
-### Why this design decision matters
-
-The facts you establish in Session 1 are what your agent will be tested on in Session 2. Choose facts that are:
-
-- **Specific** — "Dell XPS 15 running Windows 11" is better than "a Windows laptop"
-- **Testable** — you need to be able to ask a question in Session 2 that can only be answered correctly if the agent remembered Session 1
-- **Realistic** for your scenario — preferences, constraints, and background facts that a real user would share once and expect to not repeat
-
-   > **Think of it this way:** if you were a real user of this agent, what would you be most annoyed to have to repeat in every new session?
 
 1. Read the markdown cell above **Cell 5** in the notebook. It shows the example `SESSION_1_TURNS` conversation for all three scenarios.
 
@@ -248,20 +208,9 @@ The facts you establish in Session 1 are what your agent will be tested on in Se
 
    ![](./Images/ETS623.png)
 
-1. Watch the output section by section:
-
-   - **"Memory context at start: X chars"** — in Session 1, this will be very small (0–50 chars). There is no prior history yet.
-   - **Each `[USER]` / `[AGENT]` turn** — confirm the agent is responding coherently. It should not be asking for information already given in the same turn.
-   - **"Insights extracted: N"** — after session end this should be `≥ 1`. If it is `0`, your turns may not have contained enough distinct facts.
-
-   **Expected output (Scenario A example):**
-
-   ✅ Session 1 complete
-
+1. Monitor the output as the session runs and verify that the memory context is initialized, the conversation progresses through all user and agent turns, and the session ends successfully with one or more long-term insights extracted. The output should conclude with **`✅ Session 1 complete`**, confirming that the conversation has been analyzed and stored successfully.
 
    ![](./Images/ETS624.png)
-
-1. Check: are the facts you established (device, issue, constraint) visible in the **Insights extracted** list? If yes, Session 1 worked. If `Insights extracted: 0`, check that your turns are substantive — turns like `('user', 'OK')` or `('assistant', 'Sure')` will not produce insights.
 
 ## Task 3: Build and Test the Explicit Memory Retrieval Tool
 
@@ -281,6 +230,7 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
 | **Best for** | Convenience | Safety-critical or audit-required lookups |
 
 1. In Cell 6, find the `# YOUR CHOICE:` section — specifically the `TEST_QUERY` line:
+
    ```python
    TEST_QUERY = 'REPLACE ME — enter a search query relevant to your scenario'
    ```
@@ -318,30 +268,15 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
 
    ![](./Images/ETS632.png)
 
-1. The cell first defines the `recall_user_history()` function, then runs it immediately as a standalone test against the data stored in Session 1.
-
-   **Expected output (Scenario A example):**
-   ```
-   Testing retrieval tool with query:
-     "What device and OS does this user have? Any known issues or constraints?"
-   ────────────────────────────────────────────────────────────
-   Relevant history from memory:
-   1. User has a Dell XPS 15 running Windows 11...
-   2. Intermittent Wi-Fi drops after Windows update...
-   3. Requires minimal-downtime solutions for video editing...
-
-   ✅ Retrieval tool test complete
-      If the result above contains facts from Session 1, your tool is working.
-   ```
+1. Run the next code cell to test the **`recall_user_history()`** function. Verify that the retrieved results contain facts stored during **Session 1** and that the output ends with **`✅ Retrieval tool test complete`**, confirming the memory retrieval tool is successfully accessing previously stored user information.
 
    ![](./Images/ETS633.png)
 
-1. Confirm the result contains facts from Session 1 — the device type, the issue, or the constraint you established. If the result shows `No relevant history found in memory`, check:
-   - That Cell 5 completed with `Insights extracted: ≥ 1`
-   - That your `TEST_QUERY` is semantically related to what was said in Session 1
-   - That the `.db` file exists in the project root (`capstone_a_helpdesk-user-001.db` for Scenario A)
+1. Verify that the retrieved history includes key information from **Session 1**, such as the user's device, operating system, issue, or preferences, confirming that the memory retrieval tool successfully recalled previously stored information.
 
    ![](./Images/ETS634.png)
+
+   >**Note:** If the output displays **`No relevant history found in memory`**, ensure that Session 1 completed successfully with one or more insights extracted and that your retrieval query is related to the information stored during Session 1.
 
 ## Task 4: Run Session 2 and Verify Cross-Session Recall
 
@@ -385,7 +320,7 @@ For each scenario, there is a clear pass/fail criterion:
        ('user', 'I want to plan a trip to Rome. Can you suggest some restaurants?'),
        ('user', 'What hotels would you recommend? Keep my preferences in mind.'),
    ]
-   RECALL_BEFORE_TURN = 0
+   RECALL_BEFORE_TURN = 1
    ```
    </details>
 
@@ -398,70 +333,25 @@ For each scenario, there is a clear pass/fail criterion:
        ('user', 'What should we cover today?'),
        ('user', 'Can you give me a short quiz on what I already know?'),
    ]
-   RECALL_BEFORE_TURN = 0
+   RECALL_BEFORE_TURN = 1
    ```
    </details>
 
       ![](./Images/ETS642.png)
 
-1. Watch the output in three specific places:
+1. As **Session 2** starts, verify that the output shows the **long-term insight profile** being loaded for the user before any new conversation turns are processed. This confirms that information stored during **Session 1** has been automatically retrieved, demonstrating successful cross-session memory recall.
 
-   **Check 1 — Context loaded at start:**
-   ```
-   Context loaded at Session 2 start: 1,243 chars
-   ✅ Prior memory loaded — cross-session recall is active
-   Preview: [MEMORY CONTEXT]
-   === Long-term Insights ===
-   User has a Dell XPS 15 running Windows 11...
-   ```
-   The number should be significantly larger than Session 1's starting context (which was 0). This proves the server loaded Session 1's data before a single new turn was processed.
+   ![](./Images/ETS643.png)
 
-      ![](./Images/ETS643.png)
+1. During **Session 2**, verify that the output shows **`🔍 [Explicit memory tool called]`** followed by **`Retrieved: Relevant history from memory`**. This confirms that the agent explicitly invoked the **`recall_user_history()`** tool and successfully retrieved information from previous sessions before generating its response.
 
-   **Check 2 — Explicit tool call:**
-   ```
-   🔍 [Explicit memory tool called]
-   Retrieved: Relevant history from memory:
-   1. User has Dell XPS 15, Windows 11...
-   ```
-   This line confirms the `recall_user_history()` tool ran and retrieved data for the specific turn.
+   ![](./Images/ETS644.png)
 
-      ![](./Images/ETS644.png)
+1. Verify that the agent's response references information retrieved from **Session 1**, such as the user's device, operating system, issue, or preferences, even though the user did not repeat those details in **Session 2**. This confirms that the retrieved memory was successfully used to generate a context-aware response.
 
-   **Check 3 — Agent response to the recall question:**
-   Read the `[AGENT]` response after the turn where `RECALL_BEFORE_TURN` was triggered. For Scenario A, it should reference the Wi-Fi issue and the Dell XPS — information the user **did not repeat** in Session 2.
+   ![](./Images/ETS611new.png)
 
-      ![](./Images/ETS645.png)
-
-   **Full expected output structure (Scenario A):**
-   ```
-   Running Session 2 for user: helpdesk-user-001
-   ============================================================
-   Context loaded at Session 2 start: 1,243 chars
-   ✅ Prior memory loaded — cross-session recall is active
-   Preview: [MEMORY CONTEXT]
-   === Long-term Insights ===
-   User has a Dell XPS 15 running Windows 11...
-
-   [USER]: Hi again. Now my laptop is making a loud fan noise all the time.
-   [AGENT]: Hi Sam! Fan noise on your Dell XPS 15 can usually be caused by...
-
-   [USER]: Did we ever fix the Wi-Fi issue we talked about before?
-
-     🔍 [Explicit memory tool called]
-     Retrieved: User experiences intermittent Wi-Fi drops after a Windows update...
-
-   [AGENT]: Yes — in our last session you mentioned your Wi-Fi was dropping every
-   30 minutes after a Windows update on your Dell XPS 15. We identified this as
-   likely a driver issue. Did you get a chance to try the driver rollback steps?
-
-   ────────────────────────────────────────────────────────────
-   Session 2 ending...
-   Total sessions recorded: 2
-   Total insights now:      5
-
-   ✅ Session 2 complete
-   ```
+1. Verify that **Session 2** completes successfully and that the output confirms the updated long-term insight synthesis. This indicates that the retrieved memory, new conversation, and extracted insights have been successfully combined into the user's evolving long-term profile. The output should end with **`✅ Session 2 complete`**.
 
    ![](./Images/ETS648.png)
 
@@ -469,31 +359,9 @@ For each scenario, there is a clear pass/fail criterion:
 
    ![](./Images/ETS646.png)
 
-   **Expected output:**
-   ```
-   ╔══════════════════════════════════════════════════════════╗
-   ║         EXERCISE 6 CAPSTONE — VERIFICATION REPORT       ║
-   ╚══════════════════════════════════════════════════════════╝
-     Scenario:    A
-     User ID:     helpdesk-user-001
+1. Verify that the **Verification Report** confirms your memory-enabled agent is functioning correctly. Ensure the report shows the recorded sessions, extracted insights, and cross-session memory details, and that the output concludes with **`🎉 ALL CHECKS PASSED — your memory-enabled agent works!`**.
 
-     ✅ Sessions recorded: 2
-     ✅ Insights extracted: 5
-     ✅ Cross-session context: 1,243 chars
-
-     Insights summary:
-       1. User has a Dell XPS 15 running Windows 11
-       2. Intermittent Wi-Fi drops after Windows update — likely driver issue
-       3. Requires minimal-downtime solutions for video editing
-       4. New issue: fan noise in Session 2
-       5. Wi-Fi issue was previously discussed
-
-   ══════════════════════════════════════════════════════════
-     🎉 ALL CHECKS PASSED — your memory-enabled agent works!
-   ══════════════════════════════════════════════════════════
-   ```
-
-      ![](./Images/ETS647.png)
+   ![](./Images/ETS647.png)
 
    > **If one or more checks fail:**
    >
@@ -518,14 +386,11 @@ After running Cells 5–7, add a new code cell that runs a third session (copy t
 
 **Stretch 4 — Switch backend to Cosmos DB**
 In Cell 3, change the `AgentMemory` constructor to use `db_type=DatabaseType.COSMOSDB` and add your Cosmos DB credentials. Delete the `.db` file and re-run Cells 5–8. Confirm the verification report still passes — proving your agent works identically across backends with one config change.
-## Summary
 
-In this exercise, you accomplished the following:
+## 🧾 Summary
 
-- **Chose a scenario** (IT Help Desk, Travel Planning, or Learning Coach) and configured a `USER_ID`, `AGENT_PERSONA`, and `AgentMemoryConfig` tuned for a short lab session — making four design decisions rather than following a fixed script.
-- **Ran Session 1** and established 3–4 memorable facts through a scripted conversation, then confirmed they appeared in the `Insights extracted` list at session end.
-- **Built an explicit memory retrieval tool** (`recall_user_history()`) using `memory.search()` and tested it directly against Session 1's stored data, confirming it returned the specific facts you established.
-- **Ran Session 2** as a completely fresh `AgentMemory` instance, observed that the context loaded at session start was already non-empty (prior data loaded from the database), watched the `🔍 [Explicit memory tool called]` line fire at the designated turn, and confirmed the agent's response referenced Session 1 facts the user never re-stated in Session 2.
-- **Ran the verification report** (Cell 8) and confirmed all three checks passed: sessions recorded ≥ 2, insights extracted ≥ 1, cross-session context > 50 chars.
+In this exercise, you designed and built your own memory-enabled agent by selecting a scenario, configuring a unique `USER_ID`, defining an agent persona, and tuning the `AgentMemoryConfig` for your use case. You then ran two multi-turn sessions, allowing the agent to build long-term memory from the first conversation and extract durable insights that were stored automatically at session end.
+
+Next, you implemented and tested an explicit memory retrieval tool using `memory.search()`, verified that it successfully recalled information from the first session, and confirmed that the agent used this retrieved context during a new session without the user repeating earlier details. Finally, you ran the verification report to confirm that sessions, insights, and cross-session memory were all functioning correctly, demonstrating a complete end-to-end Agent Memory application.
 
 ## Congratulations! You have successfully completed the lab.

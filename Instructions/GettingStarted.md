@@ -120,7 +120,7 @@ Feel free to **start, stop, or restart (2)** your virtual machine as needed from
  
 2. You'll see the **Sign into Microsoft Azure** tab. Here, enter your credentials **(1)** and click **Next (2)**.
  
-   - **Email/Username:** <inject key="AzureAdUserName"></inject>
+   - **Email/Username:** <inject key="azureUserName"></inject>
  
     ![Enter Your Username](./Images/a9.png)
  
