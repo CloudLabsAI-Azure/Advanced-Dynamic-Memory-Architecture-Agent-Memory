@@ -249,3 +249,5 @@ In this exercise, you accomplished the following:
 - Compared both strategies across scale, contradiction handling, human readability, and production fit — confirming that bounded itemized memory suits long-running agents where size must stay predictable, while synthesis-based curation suits agents where understanding *how* a user evolved over time is the priority
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
+
+   ![](./Images/a12.png)

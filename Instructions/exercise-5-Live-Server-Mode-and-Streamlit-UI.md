@@ -450,3 +450,5 @@ In this exercise, you accomplished the following:
 - **Ran interactive mode** (`05_server_mode.py` without `--scripted`), typed 4 prompts as Alex (28-year-old engineer, aggressive stance, $800/month, no debt), ended with `/quit`, and verified the session summary confirmed 4 turns stored and insights extracted. Confirmed Alex's data was loaded by the scripted demo when temporarily set to the same User ID — proving data persisted in the server's database and was accessible to a separate client process — Task 5.
 
 You have successfully completed this exercise. Click **Next >>** to continue to the next exercise.
+
+   ![](./Images/a12.png)

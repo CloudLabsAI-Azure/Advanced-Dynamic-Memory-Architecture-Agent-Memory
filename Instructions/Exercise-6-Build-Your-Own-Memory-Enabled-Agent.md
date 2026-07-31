@@ -528,4 +528,4 @@ In this exercise, you accomplished the following:
 - **Ran Session 2** as a completely fresh `AgentMemory` instance, observed that the context loaded at session start was already non-empty (prior data loaded from the database), watched the `🔍 [Explicit memory tool called]` line fire at the designated turn, and confirmed the agent's response referenced Session 1 facts the user never re-stated in Session 2.
 - **Ran the verification report** (Cell 8) and confirmed all three checks passed: sessions recorded ≥ 2, insights extracted ≥ 1, cross-session context > 50 chars.
 
-You have successfully completed this exercise and the full lab. Click **Finish** to conclude.
+## Congratulations! You have successfully completed the lab.

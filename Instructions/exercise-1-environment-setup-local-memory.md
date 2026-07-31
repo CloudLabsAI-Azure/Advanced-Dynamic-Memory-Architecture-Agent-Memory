@@ -339,4 +339,4 @@ You accomplished the following:
 
 You have successfully completed this exercise. Select **Next >>** to continue to the next exercise.
 
-   ![](./Images/nextpage.png)
+   ![](./Images/a12.png)
