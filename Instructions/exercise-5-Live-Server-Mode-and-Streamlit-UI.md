@@ -4,7 +4,7 @@
 
 ## 📘 Scenario
 
-In the previous exercises, the notebooks interacted directly with **AgentMemory**, meaning the application, memory engine, and database all ran within the same Python process. While this approach is ideal for learning how Agent Memory works, production applications typically separate these responsibilities into independent services that communicate over HTTP.
+Contoso AI Solutions wants to explore a **service-based memory architecture** where multiple applications can access and share the same centrally managed Agent Memory. In the previous exercises, the notebooks interacted directly with **AgentMemory**, meaning the application, memory engine, and database all ran within the same Python process. While this approach is ideal for learning how Agent Memory works, separating the memory service from client applications demonstrates how these components can communicate independently over HTTP.
 
 In this exercise, you will work with a **FastAPI-based memory service** that runs independently of the client applications. You will start the memory server, connect both a terminal client and a Streamlit web application to it, and observe how multiple clients can share the same persistent memory. By interacting with the server from different clients, you will see how conversations, sessions, and long-term insights are centrally managed while each client simply communicates with the server through HTTP requests.
 
@@ -14,13 +14,13 @@ In this exercise, you will deploy and interact with an **Agent Memory server** t
 
 ## 🎯 Objectives
 
-- Task 1: Start and validate the FastAPI memory server
-- Task 2: Run the scripted terminal demo and observe what the server records
-- Task 3: Launch the Streamlit UI and watch memory build turn by turn
-- Task 4: Verify cross-session recall — Session 2 loading Session 1's memory
-- Task 5: Interactive — Type your own prompts and verify them in the browser
+   - Task 1: Configure and Start the Memory Server  
+   - Task 2: Interactive Terminal Chat 
+   - Task 3: Launch the Streamlit Live UI 
+   - Task 4: Verify cross-session recall
+   - Task 5: Test Interactive Memory across Clients 
 
-## Task 1: Start and Validate the FastAPI Memory Server
+## Task 1: Configure and Start the Memory Server
 
 In this task, you will start the server in its own terminal and verify it is healthy before connecting any clients.
 
@@ -53,7 +53,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
 
    ![](./Images/ETS513.png)
 
-1. Execute the below command to verify the server health and Confirm the response healthy
+1. Execute the below command to verify the server health and Confirm the response **healthy**.
 
    ```
    Invoke-RestMethod http://127.0.0.1:8000/health
@@ -61,7 +61,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
    
    ![](./Images/ETS514.png)
 
-## Task 2: Run the Scripted Terminal Demo and Observe What the Server Records
+## Task 2: Interactive Terminal Chat
 
 In this task, you will run the scripted demo — a fixed 5-turn automatic conversation — and observe the complete memory lifecycle: session start → turns stored → session end → insights extracted.
 
@@ -77,14 +77,14 @@ In this task, you will run the scripted demo — a fixed 5-turn automatic conver
 
    ![](./Images/ETS522.png)
 
-   > **If you see ReadTimeout error** This is a known timeout issue. The semantic search generates an embedding via Azure OpenAI before searching, which can exceed the HTTP client's default timeout under lab conditions. **Your session data is completely intact** — all 5 turns were stored before this step ran. The search concept is demonstrated visually in Task 3 through the Key Insights panel. To retry with a longer timeout:
+   > **Note:** If you see `ReadTimeout` error This is a known timeout issue. The semantic search generates an embedding via Azure OpenAI before searching, which can exceed the HTTP client's default timeout under lab conditions. **Your session data is completely intact** — all 5 turns were stored before this step ran. The search concept is demonstrated visually in Task 3 through the Key Insights panel. To retry with a longer timeout:
    > ```
    > $env:HTTPX_TIMEOUT=60; uv run python demo/05_server_mode.py --scripted
    > ```
 
 1. Review the **session summary** at the end of the demo. Verify that the server processed the completed conversation, extracted long-term insights using the reflection engine, and stored them in the database so they can be automatically loaded in future sessions for the same **`user_id`**.
 
-   ![](./Images/ETS522.png)
+   ![](./Images/ETS512new.png)
 
 1. Switch to **Terminal 1** (the server terminal) and scroll the log. Confirm the below shown logs
 
@@ -97,9 +97,9 @@ In this task, you will run the scripted demo — a fixed 5-turn automatic conver
 
    ![](./Images/ETS523.png)
 
-   > Every operation was an HTTP request. `05_server_mode.py` is just an HTTP client. All memory logic ran inside `server/main.py`.
+   > **Note:** Every operation was an HTTP request. `05_server_mode.py` is just an HTTP client. All memory logic ran inside `server/main.py`.
 
-## Task 3: Launch the Streamlit UI and Watch Memory Build Turn by Turn
+## Task 3: Launch the Streamlit Live UI
 
 In this task, you will open the Streamlit browser UI and use its playback controls to replay a scripted scenario while watching the Memory System State panel update live.
 
@@ -110,11 +110,11 @@ The Streamlit UI is a **memory visualization dashboard** — it makes the intern
 - **Turns Processed** — live counter of turns stored in this session.
 - **Context Length** — character count of the memory context. Grows with each turn.
 - **Insights** — count of long-term insights. Stays at 0 during the session, jumps at session end.
-- **Live Conversation panel** — turn-by-turn dialogue as chat bubbles (blue = User, purple = Advisor).
-- **Current Context panel** — expandable; shows the raw memory context the model would receive.
-- **Key Insights panel** — structured long-term profile: PREFERENCES, GOALS, BEHAVIOR PATTERNS, KNOWLEDGE LEVEL.
+- **Current Context** — shows the memory currently available to the agent.
+- **Session Summary** — shows a summary of the completed conversation.
+- **Extracted Insights** — shows important facts and preferences learned from the conversation.
 
-1. click **+** to open a **third terminal**. This is **Terminal 3 — the Streamlit terminal** and execute the below command to start the Streamlit UI.
+1. Click **+** to open a **third terminal**. This is **Terminal 3 — the Streamlit terminal** and execute the below command to start the Streamlit UI.
 
    ```
    uv run streamlit run demo/07_interactive_ui.py
@@ -149,7 +149,7 @@ The Streamlit UI is a **memory visualization dashboard** — it makes the intern
    - **⏭ Next (1)** — advances one turn at a time. Use this to read each turn carefully.
    - **▶ Play (2)** — runs all turns automatically at a set pace.
 
-   ![](./Images/ETS536.png)
+      ![](./Images/ETS536.png)
 
 1. Click **⏭ Next** three times and observe how the **Memory System State** updates after each step. Notice that the **Turns Processed** counter increases as each conversation turn is stored, the **Context Length** grows as more conversation is added to memory, and the **Live Conversation** panel displays the user and advisor messages as they are processed.
 
@@ -161,7 +161,7 @@ The Streamlit UI is a **memory visualization dashboard** — it makes the intern
 
    ![](./Images/ETS538.png)
 
-## Task 4: Verify Cross-Session Memory Recall
+## Task 4: Verify cross-session recall 
 
 In this task, you will verify that Agent Memory persists across multiple sessions by observing how Session 2 automatically retrieves and uses information stored during Session 1 before processing any new conversation.
 
@@ -185,10 +185,10 @@ In this task, you will verify that Agent Memory persists across multiple session
 
    ![](./Images/ETS545.png)
 
-   > Every future session will load these summaries in its context — giving the agent a compressed relationship history, not just the most recent turns.
+   > **Note:** Every future session will load these summaries in its context — giving the agent a compressed relationship history, not just the most recent turns.
 
 
-## Task 5: Interactive — Type Your Own Prompts and Verify Them.
+## Task 5: Test Interactive Memory Across Clients
 
 This is the exercise's hands-on capstone. You will run the terminal client in **interactive mode**, type your own messages as a new user, end the session, and then verify in the Streamlit browser that those exact messages were stored by the server. This closes the full loop: your input → server → database → browser.
 
@@ -241,7 +241,7 @@ This is the exercise's hands-on capstone. You will run the terminal client in **
 
    ![](./Images/ETS555.png)
 
-   > **If the session end times out or crashes:** Your 4 turns were stored before the timeout. The summary may not print, but your data is in the database. Continue to Step 6.
+   > **Note:** If the session end times out or crashes, your 4 turns were stored before the timeout. The summary may not print, but your data is in the database. Continue to Step 6.
 
 1. Now, open `demo/05_server_mode.py` **(1)** in VS Code. Find this below line at the 41 line **(2)**:
 
@@ -267,11 +267,19 @@ This is the exercise's hands-on capstone. You will run the terminal client in **
 
    ![](./Images/ETS558.png)
 
-1. Ask the Advisor `what do you know about me` and it will give all the points that was provided in the previous session
+1. Ask the Advisor below question and it will give all the points that was provided in the previous session.
+
+   ```
+   What do you know about me
+   ```
 
    ![](./Images/ETS5511.png)
 
-1. once it is verified you can `/quit` to exit from the session
+1. once it is verified you can use below command to exit from the session
+
+   ```
+   /quit
+   ```
 
    ![](./Images/ETS5512.png)
 

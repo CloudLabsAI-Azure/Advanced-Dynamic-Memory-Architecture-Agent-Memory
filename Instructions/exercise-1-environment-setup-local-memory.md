@@ -4,7 +4,7 @@
 
 ## 📘 Scenario
 
-Contoso Health Services is developing AI-powered applications that can retain conversation history and provide more contextual responses to users. To enable this capability, the development team is using the **Agent Memory** framework, which provides persistent memory, conversation summarization, and semantic retrieval for AI agents.
+Contoso AI Services is developing AI-powered applications that can retain conversation history and provide more contextual responses to users. To enable this capability, the development team is using the **Agent Memory** framework, which provides persistent memory, conversation summarization, and semantic retrieval for AI agents.
 
 In this exercise, you will prepare the local development environment, configure the application to connect with the pre-provisioned Azure OpenAI resource, and execute the **Basic Agent Memory** notebook. The notebook uses **SQLite as a local memory store**, allowing you to observe how conversations are stored, summarized, and retrieved across multiple sessions without requiring any additional database infrastructure.
 
@@ -59,6 +59,7 @@ In this task, you will verify that the required development tools are available,
    Each folder serves a specific purpose within the project:
 
    - **notebooks/** contains sample notebooks and demonstrations used throughout the lab.
+
    - **demo/** contains sample python scripts and demonstrations used throughout the lab.
    - **memory/** contains the core Agent Memory implementation.
    - **server/** includes components used when exposing Agent Memory as a service.
@@ -115,7 +116,7 @@ In this task, you will navigate to the pre-created Azure OpenAI resource, open i
    - **AZURE_OPENAI_ENDPOINT**: Repalce the endpoint value you copied in Step 4.
    - **AZURE_OPENAI_API_KEY**: Replace the API key you copied in Step 5.
 
-   ![](./Images/ETS121.png)
+      ![](./Images/ETS121.png)
 
 1. Save the changes made to the `.env` file by pressing **CTRL + S**.
 
@@ -183,7 +184,7 @@ In this task, you will install the project dependencies, open the `01_basic_memo
 
    ![](./Images/ETS1312.png)
 
-   > **Note:** The sessions are pre-scripted so the demo runs without user input and completes in under two minutes. You are observing what the system *does* with those conversations, not having a live chat.
+   > **Note:** The sessions are **pre-scripted**, so the demo runs automatically without requiring user input. You are observing how Agent Memory processes and manages these conversations.
 
 1. After the cell executes successfully, verify that the output shows the conversation session has started, the buffer configuration has been applied, and the conversation turns are being processed, as shown in the following image.
 
@@ -211,7 +212,7 @@ In this task, you will observe how Agent Memory retrieves information from previ
 
    ![](./Images/ETS1317.png)
 
-1. After the cell executes successfully, verify that the semantic search results are returned for each query and that the notebook ends with the message **"🎉 NOTEBOOK COMPLETE!"**, as shown in the following image.
+1. After the cell executes successfully, verify that the semantic search results are returned for each query.
 
    ![](./Images/ETS1318.png)
 
