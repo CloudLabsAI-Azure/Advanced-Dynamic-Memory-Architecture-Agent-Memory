@@ -4,14 +4,9 @@
 
 ## 📘 Scenario
 
-In the previous five exercises you ran pre-built demos, watched memory accumulate, and used the Streamlit UI to visualise what the system produced. In this exercise you stop following pre-written scripts and build something yourself.
+Contoso AI Solutions now wants you to apply the Agent Memory concepts explored throughout the lab by designing your own **memory-enabled agent scenario**. In the previous five exercises, you ran pre-built demos, watched memory accumulate, explored cross-session recall, and used the Streamlit UI to visualize what the system produced. In this exercise, you will move beyond the pre-written scenarios and configure the key parts of the agent yourself.
 
-You will choose a scenario — IT Help Desk, Travel Planning, or Learning Coach — and build a working memory-enabled agent from scratch using the same `AgentMemory` API you have been observing since Exercise 1. The notebook guides you every step of the way with placeholder sections and example code. You fill in the scenario-specific pieces.
-
-By the end of this exercise you will have:
-- A working agent that stores facts in Session 1 and recalls them correctly in Session 2
-- An explicit memory retrieval tool you wrote yourself, wired to your agent
-- A verification report confirming sessions, insights, and cross-session context all work end to end
+You will choose a scenario — **IT Help Desk, Travel Planning, or Learning Coach** — and build a working memory-enabled agent using the same `AgentMemory` API you have been exploring since Exercise 1. You will define scenario-specific conversations, create an explicit memory retrieval tool, store facts during Session 1, verify that they are recalled in Session 2, and run a final verification report to confirm that sessions, insights, and cross-session context are working end to end.
 
 ## 📖 Overview
 
@@ -38,7 +33,7 @@ Before picking, read the table below. The choice determines what facts your agen
 | **B — Travel Planning** | Helps a user plan trips | Preferred airline class, dietary restrictions, past destinations | Agent must flag the nut allergy in restaurant and hotel suggestions without being re-told |
 | **C — Learning Coach** | Helps a user study a topic | Topics covered, quiz scores, learning style | Agent must pick up where Session 1 left off, not restart from basics |
 
-> **Choosing a scenario is your first real design decision.** Pick the one that most closely matches a real use case you can imagine building professionally.
+> **Note:** Choosing a scenario is your first real design decision. You can select one of the three suggested scenarios or use your own idea and proceed with any real-world scenario you can imagine building.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and and open **10_capstone_my_agent.ipynb (2)**.
 
@@ -118,7 +113,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS616.png)
 
-   >**Note:** in this lab guide we are using scenario **A** which is IT Help Desk and following images are also updated as per the scenario **A**.
+   >**Note:** In this lab guide we are using scenario **A** which is IT Help Desk and following images are also updated as per the scenario **A**.
 
 1. You will get the expected output as show in below image
 
@@ -128,7 +123,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS618.png)
 
-   The default values work for this lab session. You do not need to change them now. After you get a working result in Task 4, you are encouraged to come back and change `buffer_size` from `4` to `2` and re-run to observe earlier compression.
+   >**Note:** The default values work for this lab session. You do not need to change them now. After you get a working result in Task 4, you are encouraged to come back and change `buffer_size` from `4` to `2` and re-run to observe earlier compression.
 
 1. You will get the expected output as show in below image
 

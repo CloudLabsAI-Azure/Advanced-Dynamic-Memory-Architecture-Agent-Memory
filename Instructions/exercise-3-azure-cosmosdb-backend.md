@@ -4,7 +4,7 @@
 
 ## 📘 Scenario
 
-In the previous exercises, Agent Memory stored conversations and long-term insights in a local **SQLite** database. While this approach is ideal for development and learning, the data is stored only on the local machine, making it unsuitable for applications that need persistent, shared, or cloud-accessible memory.
+Contoso AI Solutions wants to extend its intelligent assistant platform with **cloud-backed memory**, allowing conversations and long-term insights to remain persistent and accessible beyond a single local environment. In the previous exercises, Agent Memory stored conversations and long-term insights in a local **SQLite** database. While this approach is ideal for development and learning, the data is stored only on the local machine, making it unsuitable for applications that need persistent, shared, or cloud-accessible memory.
 
 In this exercise, you will migrate the same Agent Memory implementation to **Azure Cosmos DB** without changing the agent or conversation logic. You will verify that conversations and insights are stored in the cloud, explore how memory persists across sessions, and learn how bounded long-term memory keeps user profiles accurate by retaining the most relevant insights while gradually removing less useful information.
 
@@ -39,7 +39,7 @@ The project supports four backend options:
 | `azure_ai_search` | Azure cloud — a search-optimized index | When semantic/vector retrieval quality is the top priority |
 | `postgresql` | A SQL database (local or cloud) | Teams that already use Postgres in their stack |
 
-You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb`.
+> **Note:** In **Exercises 1 and 2**, you used **SQLite** as the local persistence backend. In this exercise, you switch to **Azure Cosmos DB** to explore cloud-backed memory persistence. Throughout this lab, the hands-on exercises focus on these two memory backends: **SQLite** for local storage and **Azure Cosmos DB** for cloud-based storage.
 
 ### What makes Cosmos DB different from SQLite?
 
@@ -60,6 +60,7 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 1. If it is prompted to signin, use below credentials
 
    - **Email/Username:** <inject key="AzureAdUserName"></inject>
+
    - **Temporary Access Pass:** <inject key="AzureAdUserPassword"></inject>
 
 1. In the search bar at the top of the Azure Portal, search for **Azure Cosmos DB (1)** and select **Azure Cosmos DB (2)** from the Services section.
@@ -81,9 +82,10 @@ You used `sqlite` in Exercises 1 and 2. In this exercise you switch to `cosmosdb
 1. Return to Visual Studio Code. In the Explorer pane, select `.env` and provide the following environment variables using the values you copied to Notepad:
 
    - **COSMOS_ENDPOINT**: Repalce the endpoint value you copied in Step 5.
+
    - **COSMOS_KEY**: Replace the API key you copied in Step 6.
 
-   ![](./Images/ETS314.png)
+      ![](./Images/ETS314.png)
 
 1. Save the changes made to the `.env` file by pressing **CTRL + S**.
 
@@ -103,7 +105,7 @@ In this task, you will open the **`04_cosmosdb.ipynb`** notebook and execute its
 
    ![](./Images/ETS328new.png)
 
-1. Run the first code cell (**Cell 1: Setup, Imports & Environment Configuration**). This cell imports the required libraries, loads the Azure OpenAI and Azure Cosmos DB settings from the **`.env`** file, configures the project environment, and initializes the demo using **`USER_ID = "sarah_demo_cosmos"`** so all conversation data is associated with the same user in Cosmos DB.
+1. **Run** the first code cell (**Cell 1: Setup, Imports & Environment Configuration**). This cell imports the required libraries, loads the Azure OpenAI and Azure Cosmos DB settings from the **`.env`** file, configures the project environment, and initializes the demo using **`USER_ID = "sarah_demo_cosmos"`** so all conversation data is associated with the same user in Cosmos DB.
 
    ![](./Images/ETS351.png)
 
@@ -111,7 +113,7 @@ In this task, you will open the **`04_cosmosdb.ipynb`** notebook and execute its
 
    ![](./Images/ETS3210.png)
 
-1. Run the second code cell **Cell 2: Tools, Session Runner & CosmosDB Memory Setup**. This cell creates the financial tools, configures Agent Memory to use **Azure Cosmos DB**, and defines the session runner that manages conversations and retrieves previously stored memory.
+1. **Run** the second code cell **Cell 2: Tools, Session Runner & CosmosDB Memory Setup**. This cell creates the financial tools, configures Agent Memory to use **Azure Cosmos DB**, and defines the session runner that manages conversations and retrieves previously stored memory.
 
    ![](./Images/ETS352.png)
 
@@ -119,7 +121,7 @@ In this task, you will open the **`04_cosmosdb.ipynb`** notebook and execute its
 
    ![](./Images/ETS354.png)
 
-1. Run the final code cell (**Cell 3: Run Three Sessions Demo with CosmosDB Memory**). This cell connects to **Azure Cosmos DB**, runs the three-session financial advisor scenario, and stores Sarah's conversations, summaries, and long-term insights in the cloud.
+1. **Run** the final code cell (**Cell 3: Run Three Sessions Demo with CosmosDB Memory**). This cell connects to **Azure Cosmos DB**, runs the three-session financial advisor scenario, and stores Sarah's conversations, summaries, and long-term insights in the cloud.
 
    ![](./Images/ETS353.png)
 
@@ -153,7 +155,7 @@ In this task, you will confirm that the data written in Task 2 actually exists i
    - **session_summaries** — the auto-generated summaries produced at the end of each session.
    - **insights** — the durable facts extracted about Sarah (risk tolerance, income, retirement timeline, etc.).
 
-   ![](./Images/ETS333.png)
+      ![](./Images/ETS333.png)
 
 1. Expand the **interactions (1)** container, select **Items (2)**, and open any JSON document **(3)**. Verify that the `user_id` is **`"sarah_demo_cosmos"`**, matching the notebook's `USER_ID`, and that the document contains the conversation data generated during Task 2.
 
@@ -161,7 +163,7 @@ In this task, you will confirm that the data written in Task 2 actually exists i
 
    > **Note:** In Azure Cosmos DB for NoSQL, every piece of data is stored as a JSON document inside a **container** (similar to a table in SQL, but schema-free). Each document has a unique `id` and a `partition key` — in this project, the partition key is the `user_id`, which means all of Sarah's data is grouped together for efficient retrieval.
 
-1. Click on the **insights (1)** container → **Items (2)** and open one of the insight documents **(3)**. Confirm it contains a fact extracted from the conversation — for example, Sarah's risk tolerance or income level.
+1. Click on the **insights (1)** container → **Items (2)** and open one of the insight documents **(3)**. Confirm it contains a fact extracted from the conversation.
 
    ![](./Images/ETS336.png)
 
@@ -170,6 +172,10 @@ In this task, you will confirm that the data written in Task 2 actually exists i
    ![](./Images/ETS337.png)
 
 1. Run only the first two cells again (**Cell 1 — imports and Environment, Cell 2 — tools and sessions**) to reinitialize the environment. Do **not** run the **Cell 3: Run Three Sessions Demo with CosmosDB Memory**.
+
+   ![](./Images/ETS351.png)
+
+   ![](./Images/ETS352.png)
 
 1. Click on  **+code** above **Cell 3: Run Three Sessions Demo with CosmosDB Memory** and run the following snippet to confirm prior data is accessible immediately after a fresh kernel start:
 
@@ -210,7 +216,7 @@ This notebook simulates six months of client sessions, capped at `MAX_INSIGHTS =
 
    ![](./Images/ETS342.png)
 
-1. Run the first code cell **Cell 1: Environment Setup & Configuration**. This cell loads the project environment, imports the Cosmos DB and insight curation components, sets the demo configuration (`USER_ID = "memory_priority_demo_cosmos"` and `MAX_INSIGHTS = 5`), and defines the six-session timeline used to demonstrate how long-term insights evolve over time.
+1. **Run** the first code cell **Cell 1: Environment Setup & Configuration**. This cell loads the project environment, imports the Cosmos DB and insight curation components, sets the demo configuration (`USER_ID = "memory_priority_demo_cosmos"` and `MAX_INSIGHTS = 5`), and defines the six-session timeline used to demonstrate how long-term insights evolve over time.
 
    ![](./Images/ETS3411.png)
 
@@ -218,7 +224,7 @@ This notebook simulates six months of client sessions, capped at `MAX_INSIGHTS =
 
    ![](./Images/ETS347.png)
 
-1. Run the second code cell **Cell 2: Helper Functions for Insight Management**. This cell creates the helper functions used throughout the demo to retrieve, display, rank, and prune long-term insights stored in **Azure Cosmos DB**.
+1. **Run** the second code cell **Cell 2: Helper Functions for Insight Management**. This cell creates the helper functions used throughout the demo to retrieve, display, rank, and prune long-term insights stored in **Azure Cosmos DB**.
 
    ![](./Images/ETS3410.png)
 
@@ -226,7 +232,7 @@ This notebook simulates six months of client sessions, capped at `MAX_INSIGHTS =
 
    ![](./Images/ETS349.png)
 
-1. Run the final code cell (**Cell 3: Execute Full 6-Month Memory Simulation**). This cell simulates six months of conversations for Alex, extracting new insights after each session, ranking them by retention score, and automatically pruning lower-priority insights once the memory limit (`MAX_INSIGHTS = 5`) is exceeded.
+1. **Run** the final code cell (**Cell 3: Execute Full 6-Month Memory Simulation**). This cell simulates six months of conversations for Alex, extracting new insights after each session, ranking them by retention score, and automatically pruning lower-priority insights once the memory limit (`MAX_INSIGHTS = 5`) is exceeded.
 
    ![](./Images/ETS348.png)
 
@@ -255,7 +261,7 @@ In this task, you will verify the four supported backends in the project's codeb
 
 ### Review the backend comparison
 
-Review the following table. Verify each row against your direct experience from Exercises 1, 2, and 3:
+Review the following table.
 
 | Backend | Where data lives | Best fit | Strength | Limitation |
 |---|---|---|---|---|

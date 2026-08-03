@@ -4,9 +4,9 @@
 
 ## 📘 Scenario
 
-In the previous exercise, you used the repository's direct memory flow to observe how conversation state, summaries, and recall behave with a local backend. Contoso Health Services now wants its AI agents to manage memory automatically as part of the agent lifecycle, rather than through manual calls.
+Contoso AI Solutions wants to enhance its intelligent assistants by moving beyond basic conversation memory and enabling agents to automatically retrieve and use relevant information throughout their lifecycle. The goal is to provide more consistent, context-aware interactions while exploring different approaches to how agents access and manage memory.
 
-In this exercise, you will act as an AI Engineer responsible for studying how **AgentMemory** integrates with the **Microsoft Agent Framework**, running the financial advisor scenario to verify cross-session recall, comparing framework-managed memory with an agent-driven retrieval pattern, and analyzing how repeated sessions are curated into durable long-term insights.
+In the previous notebooks, you used the repository's direct memory flow to observe how conversation state, summaries, and recall behave with a local backend. In this exercise, you will act as an **AI Engineer** responsible for studying how **AgentMemory** integrates with the **Microsoft Agent Framework**, running a financial advisor scenario to verify cross-session recall, comparing framework-managed memory with an agent-driven retrieval pattern, and analyzing how repeated sessions are curated into durable long-term insights.
 
 ## 📖 Overview
 
@@ -60,12 +60,12 @@ In this task, you will examine how Agent Memory integrates with the Microsoft Ag
 
 1. **Direct Agent Memory** vs **Agent Framework Integration**
 
-| Direct Agent Memory | Agent Framework Integration |
-|---------------------|-----------------------------|
-| Manual `add_turn()` | Automatic `after_run()` |
-| Manual `get_context()` | Automatic `before_run()` |
-| Direct AgentMemory APIs | ContextProvider pattern |
-| Manual memory lifecycle | Automatic memory lifecycle |
+   | Direct Agent Memory | Agent Framework Integration |
+   |---------------------|-----------------------------|
+   | Manual `add_turn()` | Automatic `after_run()` |
+   | Manual `get_context()` | Automatic `before_run()` |
+   | Direct AgentMemory APIs | ContextProvider pattern |
+   | Manual memory lifecycle | Automatic memory lifecycle |
 
 ## Task 2: Run the Financial Advisor Demo
 
@@ -87,13 +87,11 @@ In this task, you will run the Agent Framework notebook and observe how Agent Me
 
    ![](./Images/ETS242.png)
 
-1. After the code cell executes successfully, verify that the output shows **`✅ ALL SESSIONS COMPLETE`**, followed by the three-session summary. Also, observe the **`💡 Insights extracted`** count after each session, confirming that Agent Memory automatically reflects on the conversation and updates the user's long-term profile.
+1. After the code cell executes successfully, verify that the output shows **`✅ ALL SESSIONS COMPLETE`**. Also, observe the **`💡 Insights extracted`** count after each session, confirming that Agent Memory automatically reflects on the conversation and updates the user's long-term profile.
 
-   ![](./Images/ETS224.png)
+   ![](./Images/ETS213new.png)
 
-1. Review the outputs from **Session 2** and **Session 3** and verify that the agent automatically recalls information established in **Session 1**, rather than responding as if it were a new conversation.
-
-1. In the output, identify examples of this memory recall. In **Session 2**, observe the agent referencing Sarah's **risk tolerance** or **30-year time horizon** when recommending an investment strategy. In **Session 3**, observe the agent using Sarah's **$150,000 income** or the **retirement accounts discussed earlier** when providing tax optimization advice.
+1. Review the outputs from **Session 2** and **Session 3** and verify that the agent automatically recalls information established in **Session 1**. In **Session 2**, observe references to Sarah's **risk tolerance** or **30-year time horizon**, and in **Session 3**, look for her **$150,000 income** or previously discussed **retirement accounts**, confirming successful cross-session memory recall.
 
    ![](./Images/ETS225.png)
 
@@ -119,10 +117,11 @@ In this task, you will run the agent-driven notebook, where automatic context in
 
 1. Read the first markdown cell, **"Agent-Driven Memory Demo"**. It contrasts the two approaches directly:
 
-   - **Managed context (previous notebook):** the system automatically decides when to search; the agent passively receives pre-enriched context.
-   - **Agent-driven (this notebook):** the agent has explicit memory tools and decides for itself when to call them — making memory access transparent, auditable, and reasoned.
+   - **Managed context (previous notebook):** Agent Memory automatically retrieves and injects relevant memory into the agent's context through `context_providers=[memory]`; the agent receives this context without explicitly requesting it.
 
-   ![](./Images/ETS232.png)
+   - **Agent-driven (this notebook):** The agent is given explicit memory tools and decides when to invoke them, making memory retrieval visible, intentional, and easier to trace.
+
+      ![](./Images/ETS232.png)
 
 1. Scroll down into the notebook and review the **AgentMemoryConfig** section and notice that `auto_enrich_context=False` disables automatic context injection. Unlike the previous notebook, the agent does not automatically receive previous conversation context and must explicitly retrieve it using memory tools.
 
@@ -172,8 +171,8 @@ In this task, you will run the agent-driven notebook, where automatic context in
 
    | Pattern | Strength | Trade-off | Best-fit scenario |
    |---|---|---|---|
-   | Framework-managed (`context_providers=[memory]`) | Seamless — zero memory code in the conversation flow; context always present | Opaque — cannot see when/why memory was used; may inject irrelevant context | Consumer assistants, advisors, and multi-turn experiences where continuity should feel natural |
-   | Agent-driven (explicit `search_memory` tools) | Transparent and auditable — every access is a visible, logged tool call the agent must justify | Relies on the agent deciding to search; a missed search means missed context | Safety-critical domains (medical, legal, financial compliance) where memory access must be verifiable |
+   | Framework-managed (`context_providers=[memory]`) | Seamless — memory context is automatically retrieved and provided to the agent with no manual memory calls in the conversation flow | Less transparent — memory retrieval happens automatically, so it is less obvious when or why particular memory was included | Consumer assistants, advisors, and multi-turn experiences where continuity should feel natural |
+   | Agent-driven (explicit `search_memory` tools) | Transparent and auditable — memory retrieval appears as an explicit, visible tool call | Relies on the agent deciding when to search; if it does not invoke the tool, relevant memory may not be retrieved | Scenarios where explicit and traceable memory retrieval is important, such as the safety-focused medical example demonstrated in the lab |
 
    > **Note:** The goal of this task is not to declare one pattern universally better. Instead, you are identifying when framework-managed context injection is helpful and when explicit retrieval offers better observability, safety, or control.
 
@@ -224,7 +223,6 @@ In this task, you will run the insight curation notebook and observe how repeate
 1. Run the final code cell **Step 4: Final Analysis & Key Learnings**.
 
       ![](./Images/ETS4110.png)
-
 
 1. This cell categorizes the stored insights into **conservative**, **aggressive**, and **evolution/change** buckets, prints an explicit contradiction-resolution analysis, and cleans up the memory connection and database.
 

@@ -8,13 +8,13 @@ Contoso AI Solutions is building the next generation of its customer-facing inte
 
 To solve this, the engineering team has been tasked with integrating **Agent Memory** — a persistent, searchable memory layer that allows AI agents to remember users across sessions, extract long-term insights from conversations, and deliver contextually aware responses from the very first message of every new conversation.
 
-As an **AI Engineer at Contoso**, your role is to build and validate this memory-enabled agent platform. You will work with the Agent Memory framework built on Azure OpenAI, configure local and cloud-backed persistence backends, integrate memory into the Microsoft Agent Framework, and ultimately build and deploy a production-ready memory-enabled agent for a real-world scenario.
+As an **AI Engineer at Contoso**, your role is to build and validate this memory-enabled agent platform. You will work with the Agent Memory framework built on Azure OpenAI, configure local and cloud-backed persistence backends, integrate memory into the Microsoft Agent Framework, and ultimately build and validate a memory-enabled agent for a real-world scenario.
 
 By the end of this lab, you will demonstrate that Contoso's assistants can now remember every user — across sessions, across weeks, and across the full history of every relationship — delivering the kind of personalised, contextually aware experience that turns a generic chatbot into a trusted assistant.
 
 ## 📖 Lab Overview
 
-The **Advanced Dynamic Memory Architecture — Agent Memory** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations. Participants will learn to integrate the Agent Memory framework with Azure OpenAI, explore multiple backend persistence options (SQLite, Cosmos DB), and build a production-ready memory-enabled agent application.
+The **Advanced Dynamic Memory Architecture — Agent Memory** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations. Participants will learn to integrate the Agent Memory framework with Azure OpenAI, explore multiple backend persistence options (SQLite, Cosmos DB), and build and validate a memory-enabled agent application.
 
 The lab begins with environment setup and local memory exploration using a zero-configuration SQLite backend, giving participants a concrete understanding of how `AgentMemory` stores turns, compresses older content into summaries, and recalls facts across sessions. Participants then integrate memory into the Microsoft Agent Framework as a context provider, observing how the system automatically injects prior knowledge into every agent response without any manual retrieval code.
 
