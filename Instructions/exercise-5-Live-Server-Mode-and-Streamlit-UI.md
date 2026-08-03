@@ -47,9 +47,9 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
 
    ![](./Images/ETS512.png)
 
-   > **Do NOT close Terminal 1 or press Ctrl+C during this exercise.** Both clients fail immediately if the server stops.
+   > **Note: Do NOT close Terminal 1 or press Ctrl+C during this exercise.** Both clients fail immediately if the server stops.
 
-1. click the **+** icon to open a **second terminal**. This is **Terminal 2 — your client terminal**.
+1. Click the **+** icon to open a **second terminal**. This is **Terminal 2 — your client terminal**.
 
    ![](./Images/ETS513.png)
 

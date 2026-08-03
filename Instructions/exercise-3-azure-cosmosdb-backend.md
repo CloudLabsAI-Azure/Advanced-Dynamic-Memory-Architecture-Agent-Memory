@@ -59,7 +59,7 @@ The project supports four backend options:
 
 1. If it is prompted to signin, use below credentials
 
-   - **Email/Username:** <inject key="AzureAdUserName"></inject>
+   - **Email/Username:** <inject key="AzureAdUserEmail"></inject>
 
    - **Temporary Access Pass:** <inject key="AzureAdUserPassword"></inject>
 
