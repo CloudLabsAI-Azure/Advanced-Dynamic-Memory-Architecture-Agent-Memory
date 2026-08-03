@@ -145,7 +145,7 @@ In this task, you will fill in your Session 1 conversation turns and run them th
 
    ![](./Images/ETS621.png)
 
-1. In **Cell 5**, find the `# YOUR CHOICE:` section. Paste the `SESSION_1_TURNS` list for your scenario from the markdown reference — or replace it with your own turns if you want to customise the scenario **(1)** and **(2)**.
+1. In **Cell 5**, find the `# YOUR CHOICE:` section. Paste the `SESSION_1_TURNS` list for your scenario from the markdown reference — or replace it with your own turns if you want to customise the scenario **(1)** and **Run (2)**.
 
    ![](./Images/ETS622.png)
 
