@@ -63,7 +63,7 @@ The result is a memory system that behaves like human long-term memory: frequent
 
 ## Task 2: Run Itemized Insights Demo (SQLite)
 
-In this task, you will execute the three code cells in `08_itemized_insights.ipynb` one by one and observe how the insight table evolves — with entries being added, strengthened, and pruned — across six simulated sessions.
+In this task, you will execute the three code cells in `08_itemized_insights.ipynb` one by one and observe how the insight table evolves with entries being added, strengthened, and pruned across six simulated sessions.
 
 1. Run the first code cell (**Cell 1: Setup, Imports & Configuration**). This cell loads the project environment, initializes the Azure OpenAI client, configures the local SQLite database, and defines the six-month timeline that will be used to demonstrate bounded memory and insight prioritization.
 
@@ -99,7 +99,7 @@ In this task, you will execute the three code cells in `08_itemized_insights.ipy
 
 ## Task 4.3: Compare Synthesis Strategies
 
-In this task, you will open the `06_insight_curation.ipynb` notebook (which you ran in Exercise 2), then place both notebooks side by side to compare the two strategies across four dimensions. No new concepts are introduced — the goal is to lock in a clear mental model you can use when designing real agent memory systems.
+In this task, you will open the `06_insight_curation.ipynb` notebook (which you ran in Exercise 2), then place both notebooks side by side to compare the two strategies across four dimensions. No new concepts are introduced. the goal is to lock in a clear mental model you can use when designing real agent memory systems.
 
 ### What is the difference between the two strategies?
 
@@ -124,15 +124,15 @@ Read this summary so you know what to look for in the output:
 
    | Dimension | `08_itemized_insights.ipynb` | `06_insight_curation.ipynb` |
    |---|---|---|
-   | **Scale** | Insight count stays at exactly 5 regardless of how many sessions run | Insights accumulate freely — count grows with every session |
-   | **Contradiction handling** | Contradicted insights decay naturally if they stop being cited — they are not explicitly detected, just gradually pruned | Contradictions are explicitly detected and resolved into a single evolution narrative: *"WAS conservative → NOW aggressive"* |
-   | **Human readability** | A clean, scored table of short facts — easy for a developer or operator to review at a glance | A narrative profile — richer context but harder to audit at scale |
+   | **Scale** | Insight count stays at exactly 5 regardless of how many sessions run | Insights accumulate freely count grows with every session |
+   | **Contradiction handling** | Contradicted insights decay naturally if they stop being cited, they are not explicitly detected, just gradually pruned | Contradictions are explicitly detected and resolved into a single evolution narrative: *"WAS conservative → NOW aggressive"* |
+   | **Human readability** | A clean, scored table of short facts easy for a developer or operator to review at a glance | A narrative profile richer context but harder to audit at scale |
    | **Production fit** | Best for long-running agents where memory size, cost, and latency must stay predictable | Best for agents where understanding *how* a user's situation changed matters (e.g., financial advisor, career coach) |
 
 1. Confirm the difference between the two strategies in one sentence each:
 
-   - **`08_itemized_insights`:** find the final session's `Memory State AFTER Session (Top 5)` table in the left pane — this is a bounded, scored list of the 5 most valuable facts the agent knows about Alex.
-   - **`06_insight_curation`:** find the `evolution_insights` section in Cell 7's output in the right pane — this is a narrative that explicitly describes *how* Alex's profile changed over time, not just what it is now.
+   - **`08_itemized_insights`:** find the final session's `Memory State AFTER Session (Top 5)` table in the left pane, this is a bounded, scored list of the 5 most valuable facts the agent knows about Alex.
+   - **`06_insight_curation`:** find the `evolution_insights` section in Cell 7's output in the right pane, this is a narrative that explicitly describes *how* Alex's profile changed over time, not just what it is now.
 
       ![](./Images/ETS433.png).
 

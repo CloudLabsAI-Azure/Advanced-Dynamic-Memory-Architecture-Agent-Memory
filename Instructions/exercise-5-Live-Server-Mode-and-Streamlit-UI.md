@@ -26,7 +26,7 @@ In this task, you will start the server in its own terminal and verify it is hea
 
 ### What is the FastAPI memory server?
 
-In the previous exercises, the notebooks interacted directly with **AgentMemory**, using Python methods to start sessions, store conversation turns, retrieve memory context, and end sessions. In this exercise, those same memory operations are exposed through a **FastAPI** server as **HTTP endpoints**. Instead of calling Python functions directly, client applications send HTTP requests to the server to perform these operations. This allows multiple clients to share the same centralized memory service without needing to understand the underlying memory implementation—they simply communicate with the server using its URL.
+In the previous exercises, the notebooks interacted directly with **AgentMemory**, using Python methods to start sessions, store conversation turns, retrieve memory context, and end sessions. In this exercise, those same memory operations are exposed through a **FastAPI** server as **HTTP endpoints**. Instead of calling Python functions directly, client applications send HTTP requests to the server to perform these operations. This allows multiple clients to share the same centralized memory service without needing to understand the underlying memory implementation they simply communicate with the server using its URL.
 
 
 1. Click on the **ellipsis (...) (1)** in the top menu, then select **Terminal (2)** and click **New Terminal (3)**.
@@ -41,7 +41,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
    
    ![](./Images/ETS511.png)
 
-   > **What this means:** `server.main:app` tells Uvicorn to open `server/main.py` and find the `app` variable — the FastAPI application object. `--host 127.0.0.1` restricts it to your local machine. `--port 8000` is the port both clients will use.
+   > **What this means:** `server.main:app` tells Uvicorn to open `server/main.py` and find the `app` variable the FastAPI application object. `--host 127.0.0.1` restricts it to your local machine. `--port 8000` is the port both clients will use.
 
 1. Watch for the startup confirmation as shown in the following image.
 
@@ -49,7 +49,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
 
    > **Note: Do NOT close Terminal 1 or press Ctrl+C during this exercise.** Both clients fail immediately if the server stops.
 
-1. Click the **+** icon to open a **second terminal**. This is **Terminal 2 — your client terminal**.
+1. Click the **+** icon to open a **second terminal**. This is **Terminal 2 - your client terminal**.
 
    ![](./Images/ETS513.png)
 
@@ -63,7 +63,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
 
 ## Task 2: Interactive Terminal Chat
 
-In this task, you will run the scripted demo — a fixed 5-turn automatic conversation — and observe the complete memory lifecycle: session start → turns stored → session end → insights extracted.
+In this task, you will run the scripted demo a fixed 5-turn automatic conversation and observe the complete memory lifecycle: session start → turns stored → session end → insights extracted.
 
 1. In **Terminal 2**, run the following command to execute the `05_server_mode.py` in scripted mode. Once the command executes successfully, verify from the output that the **Memory service is healthy** and a **session has started**, as shown in the image below.
 
@@ -77,7 +77,7 @@ In this task, you will run the scripted demo — a fixed 5-turn automatic conver
 
    ![](./Images/ETS522.png)
 
-   > **Note:** If you see `ReadTimeout` error This is a known timeout issue. The semantic search generates an embedding via Azure OpenAI before searching, which can exceed the HTTP client's default timeout under lab conditions. **Your session data is completely intact** — all 5 turns were stored before this step ran. The search concept is demonstrated visually in Task 3 through the Key Insights panel. To retry with a longer timeout:
+   > **Note:** If you see `ReadTimeout` error This is a known timeout issue. The semantic search generates an embedding via Azure OpenAI before searching, which can exceed the HTTP client's default timeout under lab conditions. **Your session data is completely intact** all 5 turns were stored before this step ran. The search concept is demonstrated visually in Task 3 through the Key Insights panel. To retry with a longer timeout:
    > ```
    > $env:HTTPX_TIMEOUT=60; uv run python demo/05_server_mode.py --scripted
    > ```
@@ -105,16 +105,16 @@ In this task, you will open the Streamlit browser UI and use its playback contro
 
 ### What the Streamlit UI is
 
-The Streamlit UI is a **memory visualization dashboard** — it makes the internal state of the memory system visible as a scenario plays. It is not a live chat box. As turns process:
+The Streamlit UI is a **memory visualization dashboard** it makes the internal state of the memory system visible as a scenario plays. It is not a live chat box. As turns process:
 
-- **Turns Processed** — live counter of turns stored in this session.
-- **Context Length** — character count of the memory context. Grows with each turn.
-- **Insights** — count of long-term insights. Stays at 0 during the session, jumps at session end.
-- **Current Context** — shows the memory currently available to the agent.
-- **Session Summary** — shows a summary of the completed conversation.
-- **Extracted Insights** — shows important facts and preferences learned from the conversation.
+- **Turns Processed** - live counter of turns stored in this session.
+- **Context Length** - character count of the memory context. Grows with each turn.
+- **Insights** - count of long-term insights. Stays at 0 during the session, jumps at session end.
+- **Current Context** - shows the memory currently available to the agent.
+- **Session Summary** - shows a summary of the completed conversation.
+- **Extracted Insights** - shows important facts and preferences learned from the conversation.
 
-1. Click **+** to open a **third terminal**. This is **Terminal 3 — the Streamlit terminal** and execute the below command to start the Streamlit UI.
+1. Click **+** to open a **third terminal**. This is **Terminal 3 - the Streamlit terminal** and execute the below command to start the Streamlit UI.
 
    ```
    uv run streamlit run demo/07_interactive_ui.py
@@ -146,8 +146,8 @@ The Streamlit UI is a **memory visualization dashboard** — it makes the intern
 
 1. At the bottom of the left sidebar, find **Playback Controls**. Use these options:
 
-   - **⏭ Next (1)** — advances one turn at a time. Use this to read each turn carefully.
-   - **▶ Play (2)** — runs all turns automatically at a set pace.
+   - **⏭ Next (1)** - advances one turn at a time. Use this to read each turn carefully.
+   - **▶ Play (2)** - runs all turns automatically at a set pace.
 
       ![](./Images/ETS536.png)
 
@@ -157,7 +157,7 @@ The Streamlit UI is a **memory visualization dashboard** — it makes the intern
 
 1. Click **▶ Play** to run the remaining turns. Watch **Turns Processed** count to 5 and **Context Length** grow.
 
-1. When playback completes, watch the **Insights counter** jump from 0 to a positive number (3–5). you will get summary and insights. This is `end_session(trigger_reflection=True)` running — durable facts extracted, written to the database.
+1. When playback completes, watch the **Insights counter** jump from 0 to a positive number (3–5). you will get summary and insights. This is `end_session(trigger_reflection=True)` running durable facts extracted, written to the database.
 
    ![](./Images/ETS538.png)
 
@@ -177,7 +177,7 @@ In this task, you will verify that Agent Memory persists across multiple session
 
    ![](./Images/ETS543.png)
 
-1. After Session 2 finishes, compare the **Insights counter** to the count from Session 1 — it should be higher, as new insights accumulated or existing ones were updated.
+1. After Session 2 finishes, compare the **Insights counter** to the count from Session 1 it should be higher, as new insights accumulated or existing ones were updated.
 
    ![](./Images/ETS544.png)
 
@@ -185,7 +185,7 @@ In this task, you will verify that Agent Memory persists across multiple session
 
    ![](./Images/ETS545.png)
 
-   > **Note:** Every future session will load these summaries in its context — giving the agent a compressed relationship history, not just the most recent turns.
+   > **Note:** Every future session will load these summaries in its context giving the agent a compressed relationship history, not just the most recent turns.
 
 
 ## Task 5: Test Interactive Memory Across Clients
@@ -200,7 +200,7 @@ This is the exercise's hands-on capstone. You will run the terminal client in **
 
    ![](./Images/ETS551.png)
 
-1. Wait for the chat prompt. The output will look like below. Write down your `User ID` — for later use
+1. Wait for the chat prompt. The output will look like below. Write down your `User ID` for later use
 
    ![](./Images/ETS553.png)
 
@@ -210,7 +210,7 @@ This is the exercise's hands-on capstone. You will run the terminal client in **
    ```
    My name is Alex and I am a 28-year-old software engineer earning 90000 dollars a year.
    ```
-   *Wait for the advisor's response — it may ask follow-up questions. Ignore them and type Prompt 2.*
+   *Wait for the advisor's response it may ask follow-up questions. Ignore them and type Prompt 2.*
 
    **Prompt 2:**
    ```
