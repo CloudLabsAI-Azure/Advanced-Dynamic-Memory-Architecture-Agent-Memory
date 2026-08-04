@@ -6,7 +6,7 @@
 
 Contoso AI Solutions now wants you to apply the Agent Memory concepts explored throughout the lab by designing your own **memory-enabled agent scenario**. In the previous five exercises, you ran pre-built demos, watched memory accumulate, explored cross-session recall, and used the Streamlit UI to visualize what the system produced. In this exercise, you will move beyond the pre-written scenarios and configure the key parts of the agent yourself.
 
-You will choose a scenario — **IT Help Desk, Travel Planning, or Learning Coach** — and build a working memory-enabled agent using the same `AgentMemory` API you have been exploring since Exercise 1. You will define scenario-specific conversations, create an explicit memory retrieval tool, store facts during Session 1, verify that they are recalled in Session 2, and run a final verification report to confirm that sessions, insights, and cross-session context are working end to end.
+You will choose a scenario - **IT Help Desk, Travel Planning, or Learning Coach** and build a working memory-enabled agent using the same `AgentMemory` API you have been exploring since Exercise 1. You will define scenario-specific conversations, create an explicit memory retrieval tool, store facts during Session 1, verify that they are recalled in Session 2, and run a final verification report to confirm that sessions, insights, and cross-session context are working end to end.
 
 ## 📖 Overview
 
@@ -29,9 +29,9 @@ Before picking, read the table below. The choice determines what facts your agen
 
 | Scenario | Your agent does this | Critical facts to remember | The recall test |
 |---|---|---|---|
-| **A — IT Help Desk** | Helps a user troubleshoot technical problems | Device type, OS, past issues, resolved tickets | Agent must never re-ask for device/OS info it was already given |
-| **B — Travel Planning** | Helps a user plan trips | Preferred airline class, dietary restrictions, past destinations | Agent must flag the nut allergy in restaurant and hotel suggestions without being re-told |
-| **C — Learning Coach** | Helps a user study a topic | Topics covered, quiz scores, learning style | Agent must pick up where Session 1 left off, not restart from basics |
+| **A - IT Help Desk** | Helps a user troubleshoot technical problems | Device type, OS, past issues, resolved tickets | Agent must never re-ask for device/OS info it was already given |
+| **B - Travel Planning** | Helps a user plan trips | Preferred airline class, dietary restrictions, past destinations | Agent must flag the nut allergy in restaurant and hotel suggestions without being re-told |
+| **C - Learning Coach** | Helps a user study a topic | Topics covered, quiz scores, learning style | Agent must pick up where Session 1 left off, not restart from basics |
 
 > **Note:** Choosing a scenario is your first real design decision. You can select one of the three suggested scenarios or use your own idea and proceed with any real-world scenario you can imagine building.
 
@@ -47,7 +47,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS614.png)
 
-1. Run **Cell 1 — Setup: Imports, Environment, and Project Root**. This cell finds the project root, loads your `.env` file, validates the four required environment variables, and imports `AgentMemory` and `AgentMemoryConfig`.
+1. Run **Cell 1 - Setup: Imports, Environment, and Project Root**. This cell finds the project root, loads your `.env` file, validates the four required environment variables, and imports `AgentMemory` and `AgentMemoryConfig`.
 
    ![](./Images/ETS612.png)
 
@@ -55,7 +55,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS613.png)
 
-1. Run **Cell 2 — Configure Your Agent**. Read the reference block for your chosen scenario, then paste it into the `# YOUR CHOICE:` section of the cell, replacing the three placeholders **(1)** and click on **Run (2)**.
+1. Run **Cell 2 - Configure Your Agent**. Read the reference block for your chosen scenario, then paste it into the `# YOUR CHOICE:` section of the cell, replacing the three placeholders **(1)** and click on **Run (2)**.
 
    For **Scenario A** (IT Help Desk), paste below script:
    <details>
@@ -119,7 +119,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS617.png)
 
-1. Run **Cell 3 — Tune Memory Configuration**. Read the parameter table in the markdown cell above it carefully — understand what each setting does before running.
+1. Run **Cell 3 - Tune Memory Configuration**. Read the parameter table in the markdown cell above it carefully understand what each setting does before running.
 
    ![](./Images/ETS618.png)
 
@@ -129,7 +129,7 @@ Before picking, read the table below. The choice determines what facts your agen
 
    ![](./Images/ETS619.png)
 
-1. Run **Cell 4 — Build the Simple Agent**. This cell creates the `MyAgent` class — a lightweight wrapper around the Azure OpenAI chat API that accepts memory context through the `{memory_context}` placeholder in your persona.
+1. Run **Cell 4 - Build the Simple Agent**. This cell creates the `MyAgent` class a lightweight wrapper around the Azure OpenAI chat API that accepts memory context through the `{memory_context}` placeholder in your persona.
 
    ![](./Images/ETS6110.png)
 
@@ -145,7 +145,7 @@ In this task, you will fill in your Session 1 conversation turns and run them th
 
    ![](./Images/ETS621.png)
 
-1. In **Cell 5**, find the `# YOUR CHOICE:` section. Paste the `SESSION_1_TURNS` list for your scenario from the markdown reference — or replace it with your own turns if you want to customise the scenario **(1)** and **Run (2)**.
+1. In **Cell 5**, find the `# YOUR CHOICE:` section. Paste the `SESSION_1_TURNS` list for your scenario from the markdown reference or replace it with your own turns if you want to customise the scenario **(1)** and **Run (2)**.
 
    ![](./Images/ETS622.png)
 
@@ -160,9 +160,9 @@ In this task, you will fill in your Session 1 conversation turns and run them th
        ('user', 'Hi, my name is Sam. I have a Dell XPS 15 laptop running Windows 11.'),
        ('assistant', 'Thanks Sam! I have noted your Dell XPS 15 on Windows 11. How can I help?'),
        ('user', 'My Wi-Fi keeps dropping every 30 minutes. It started after last week\'s Windows update.'),
-       ('assistant', 'I see — intermittent Wi-Fi after a Windows update is often a driver issue. Let me check the common fixes for Dell XPS 15 on Windows 11.'),
+       ('assistant', 'I see intermittent Wi-Fi after a Windows update is often a driver issue. Let me check the common fixes for Dell XPS 15 on Windows 11.'),
        ('user', 'Also I use this laptop for video editing so I cannot afford long downtime.'),
-       ('assistant', 'Understood — I will prioritise minimal-downtime solutions given your video editing workflow.'),
+       ('assistant', 'Understood - I will prioritise minimal-downtime solutions given your video editing workflow.'),
    ]
    ```
    </details>
@@ -174,9 +174,9 @@ In this task, you will fill in your Session 1 conversation turns and run them th
    ```python
    SESSION_1_TURNS = [
        ('user', 'Hi! I\'m Maya. I always fly business class and prefer window seats.'),
-       ('assistant', 'Welcome Maya! Noted — business class, window seat preference.'),
+       ('assistant', 'Welcome Maya! Noted - business class, window seat preference.'),
        ('user', 'I\'m vegetarian and I have a severe nut allergy, so food options matter a lot.'),
-       ('assistant', 'Important — vegetarian with severe nut allergy. I will flag this for every itinerary.'),
+       ('assistant', 'Important - vegetarian with severe nut allergy. I will flag this for every itinerary.'),
        ('user', 'I visited Tokyo last year and would love somewhere equally cultural this time.'),
        ('assistant', 'Cultural destinations, similar to Tokyo. I will keep that in mind for your next trip recommendation.'),
    ]
@@ -190,11 +190,11 @@ In this task, you will fill in your Session 1 conversation turns and run them th
    ```python
    SESSION_1_TURNS = [
        ('user', 'Hi coach! I\'m Jordan and I\'m learning Python. I\'m a complete beginner.'),
-       ('assistant', 'Great to meet you Jordan! Starting Python from scratch — noted.'),
+       ('assistant', 'Great to meet you Jordan! Starting Python from scratch - noted.'),
        ('user', 'I just finished the basics: variables, loops, and functions. I scored 85 on the quiz.'),
-       ('assistant', 'Excellent — 85 on the fundamentals quiz. You have a solid foundation.'),
+       ('assistant', 'Excellent - 85 on the fundamentals quiz. You have a solid foundation.'),
        ('user', 'I learn best with real examples and short sessions, not long theory.'),
-       ('assistant', 'Practical examples, short sessions — I will structure all future coaching accordingly.'),
+       ('assistant', 'Practical examples, short sessions - I will structure all future coaching accordingly.'),
    ]
    ```
    </details>
@@ -213,7 +213,7 @@ In this task, you will fill in the test query for your scenario's explicit retri
 
 ### What an explicit retrieval tool is and why you are building it
 
-In Exercise 2, Task 3, you watched the Medical Assistant agent call `search_memory` explicitly before recommending an antibiotic — because the allergy was safety-critical and the agent needed to *choose* to look it up. The function `recall_user_history()` in Cell 6 is exactly that pattern, built for your scenario.
+In Exercise 2, Task 3, you watched the Medical Assistant agent call `search_memory` explicitly before recommending an antibiotic because the allergy was safety-critical and the agent needed to *choose* to look it up. The function `recall_user_history()` in Cell 6 is exactly that pattern, built for your scenario.
 
 This is different from the `auto_enrich_context=True` setting already in Cell 3:
 
@@ -221,20 +221,20 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
 |---|---|---|
 | **When it runs** | Automatically, every time a trigger keyword appears | Explicitly, when you call it in the conversation loop |
 | **What it searches** | Pre-defined keyword-matched queries | The exact query you pass |
-| **Visibility** | Invisible in the output | Visible — prints `🔍 [Explicit memory tool called]` |
+| **Visibility** | Invisible in the output | Visible prints `🔍 [Explicit memory tool called]` |
 | **Best for** | Convenience | Safety-critical or audit-required lookups |
 
-1. In Cell 6, find the `# YOUR CHOICE:` section — specifically the `TEST_QUERY` line:
+1. In Cell 6, find the `# YOUR CHOICE:` section specifically the `TEST_QUERY` line:
 
    ```python
-   TEST_QUERY = 'REPLACE ME — enter a search query relevant to your scenario'
+   TEST_QUERY = 'REPLACE ME - enter a search query relevant to your scenario'
    ```
 
    ![](./Images/ETS631.png)
 
 1. Replace it with the test query for your scenario and run the cell:
 
-   **Scenario A — IT Help Desk:** paste below script:
+   **Scenario A - IT Help Desk:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -243,7 +243,7 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
    ```
    </details>
 
-   **Scenario B — Travel Planning:** paste below script:
+   **Scenario B - Travel Planning:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -252,7 +252,7 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
    ```
    </details>
 
-   **Scenario C — Learning Coach:** paste below script:
+   **Scenario C - Learning Coach:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -275,7 +275,7 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
 
 ## Task 4: Run Session 2 and Verify Cross-Session Recall
 
-This is the capstone moment. Session 2 starts as a completely fresh `AgentMemory` instance — a new Python object, fresh active buffer, nothing in it from Session 1. Yet when it starts, it loads Session 1's insights and session summary from the database. Your Session 2 turns will include a question the agent can only answer correctly if it remembered Session 1.
+This is the capstone moment. Session 2 starts as a completely fresh `AgentMemory` instance a new Python object, fresh active buffer, nothing in it from Session 1. Yet when it starts, it loads Session 1's insights and session summary from the database. Your Session 2 turns will include a question the agent can only answer correctly if it remembered Session 1.
 
 ### The verification test
 
@@ -283,9 +283,9 @@ For each scenario, there is a clear pass/fail criterion:
 
 | Scenario | Session 2 question | Pass: agent says... | Fail: agent says... |
 |---|---|---|---|
-| **A — IT Help Desk** | "Did we ever fix the Wi-Fi issue?" | References the Wi-Fi problem and the Dell XPS without being told again | "Could you remind me of the issue you were having?" |
-| **B — Travel Planning** | "Can you suggest restaurants in Rome?" | Flags the nut allergy and vegetarian requirement without being told again | Gives generic restaurant suggestions with no allergy awareness |
-| **C — Learning Coach** | "What should we cover today?" | Picks up from where Session 1 left off (after functions/loops, score 85) | "Let us start with the basics — what do you know so far?" |
+| **A - IT Help Desk** | "Did we ever fix the Wi-Fi issue?" | References the Wi-Fi problem and the Dell XPS without being told again | "Could you remind me of the issue you were having?" |
+| **B - Travel Planning** | "Can you suggest restaurants in Rome?" | Flags the nut allergy and vegetarian requirement without being told again | Gives generic restaurant suggestions with no allergy awareness |
+| **C - Learning Coach** | "What should we cover today?" | Picks up from where Session 1 left off (after functions/loops, score 85) | "Let us start with the basics what do you know so far?" |
 
 1. In **Cell 7**, find the `# YOUR CHOICE:` section. 
 
@@ -293,7 +293,7 @@ For each scenario, there is a clear pass/fail criterion:
 
 1. Paste the `SESSION_2_TURNS` and `RECALL_BEFORE_TURN` for your scenario and Run **Cell 7**
 
-   **Scenario A — IT Help Desk:** paste below script:
+   **Scenario A - IT Help Desk:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -306,7 +306,7 @@ For each scenario, there is a clear pass/fail criterion:
    ```
    </details>
 
-   **Scenario B — Travel Planning:** paste below script:
+   **Scenario B - Travel Planning:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -319,7 +319,7 @@ For each scenario, there is a clear pass/fail criterion:
    ```
    </details>
 
-   **Scenario C — Learning Coach:** paste below script:
+   **Scenario C - Learning Coach:** paste below script:
    <details>
    <summary>Click here to expand</summary>
 
@@ -350,11 +350,11 @@ For each scenario, there is a clear pass/fail criterion:
 
    ![](./Images/ETS648.png)
 
-1. Run **Cell 8 — Verification Report**. This cell opens a third fresh `AgentMemory` instance (simulating a third session start), retrieves all sessions and insights, and prints a pass/fail report.
+1. Run **Cell 8 - Verification Report**. This cell opens a third fresh `AgentMemory` instance (simulating a third session start), retrieves all sessions and insights, and prints a pass/fail report.
 
    ![](./Images/ETS646.png)
 
-1. Verify that the **Verification Report** confirms your memory-enabled agent is functioning correctly. Ensure the report shows the recorded sessions, extracted insights, and cross-session memory details, and that the output concludes with **`🎉 ALL CHECKS PASSED — your memory-enabled agent works!`**.
+1. Verify that the **Verification Report** confirms your memory-enabled agent is functioning correctly. Ensure the report shows the recorded sessions, extracted insights, and cross-session memory details, and that the output concludes with **`🎉 ALL CHECKS PASSED - our memory-enabled agent works!`**.
 
    ![](./Images/ETS647.png)
 
@@ -362,7 +362,7 @@ For each scenario, there is a clear pass/fail criterion:
    >
    > | Check failed | Action |
    > |---|---|
-   > | Sessions recorded: 1 | Re-run Cell 7 — Session 2 did not complete cleanly |
+   > | Sessions recorded: 1 | Re-run Cell 7  Session 2 did not complete cleanly |
    > | Insights extracted: 0 | Re-run Cell 5 with more substantive turns (avoid one-word replies) |
    > | Cross-session context too small | Restart the kernel, re-run Cells 1–5 in order, then re-run Cell 8 |
 
@@ -370,17 +370,17 @@ For each scenario, there is a clear pass/fail criterion:
 
 These are optional challenges for learners who finish early. None of them are required for the verification report to pass.
 
-**Stretch 1 — Change your scenario turns and re-run**
+**Stretch 1 - Change your scenario turns and re-run**
 Go back to Cell 5 and write completely different Session 1 turns for your scenario. Delete the `.db` file first (run `import os; os.remove(DB_PATH)` in a new cell), then re-run Cells 5–8. Does the verification report still pass with your custom conversation?
 
-**Stretch 2 — Tune buffer_size and observe compression earlier**
-In Cell 3, change `buffer_size` from `4` to `2`. Delete the `.db` file and re-run Cells 5–7. In the Session 1 output, watch for the first time the system says `[Memory pruned - older turns summarized]` — it should now appear earlier in the turn sequence.
+**Stretch 2 - Tune buffer_size and observe compression earlier**
+In Cell 3, change `buffer_size` from `4` to `2`. Delete the `.db` file and re-run Cells 5–7. In the Session 1 output, watch for the first time the system says `[Memory pruned - older turns summarized]` it should now appear earlier in the turn sequence.
 
-**Stretch 3 — Add a third session**
+**Stretch 3 - Add a third session**
 After running Cells 5–7, add a new code cell that runs a third session (copy the structure of Cell 7). Re-run Cell 8 and confirm `Sessions recorded: 3` and `Insights now: ≥ 6`. Check whether the insight profile evolved to reflect what was added in Sessions 2 and 3.
 
-**Stretch 4 — Switch backend to Cosmos DB**
-In Cell 3, change the `AgentMemory` constructor to use `db_type=DatabaseType.COSMOSDB` and add your Cosmos DB credentials. Delete the `.db` file and re-run Cells 5–8. Confirm the verification report still passes — proving your agent works identically across backends with one config change.
+**Stretch 4 - Switch backend to Cosmos DB**
+In Cell 3, change the `AgentMemory` constructor to use `db_type=DatabaseType.COSMOSDB` and add your Cosmos DB credentials. Delete the `.db` file and re-run Cells 5–8. Confirm the verification report still passes proving your agent works identically across backends with one config change.
 
 ## 🧾 Summary
 

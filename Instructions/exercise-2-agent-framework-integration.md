@@ -36,9 +36,9 @@ In this task, you will examine how Agent Memory integrates with the Microsoft Ag
    ![](./Images/ETS244.png)
 
    >**Important:** It introduces the three key concepts demonstrated in this exercise.
-   > - **ContextProvider pattern** — Agent Memory is passed to the agent through `context_providers=[memory]`, eliminating the need to manually manage conversation history.
-   > - **Automatic context injection** — `memory.before_run()` is invoked automatically before each agent response to load previous conversation context and the user's long-term profile.
-   > - **Automatic turn capture** — `memory.after_run()` is invoked automatically after each response to store the latest conversation turn in memory.
+   > - **ContextProvider pattern** - Agent Memory is passed to the agent through `context_providers=[memory]`, eliminating the need to manually manage conversation history.
+   > - **Automatic context injection** - `memory.before_run()` is invoked automatically before each agent response to load previous conversation context and the user's long-term profile.
+   > - **Automatic turn capture** - `memory.after_run()` is invoked automatically after each response to store the latest conversation turn in memory.
 
 1. Scroll to the first code cell (**Steps 1–6: Setup, Configuration & Agent Initialization**) and review the code without executing it.
 
@@ -109,7 +109,7 @@ In this task, you will run the Agent Framework notebook and observe how Agent Me
 
 ## Task 3: Compare Agent-Driven Memory Retrieval
 
-In this task, you will run the agent-driven notebook, where automatic context injection is disabled and the agent must explicitly decide when to search memory — and observe a safety-critical scenario that tests whether it does.
+In this task, you will run the agent-driven notebook, where automatic context injection is disabled and the agent must explicitly decide when to search memory and observe a safety-critical scenario that tests whether it does.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **03_agent_driven.ipynb (2)** notebook 
 
@@ -171,20 +171,20 @@ In this task, you will run the agent-driven notebook, where automatic context in
 
    | Pattern | Strength | Trade-off | Best-fit scenario |
    |---|---|---|---|
-   | Framework-managed (`context_providers=[memory]`) | Seamless — memory context is automatically retrieved and provided to the agent with no manual memory calls in the conversation flow | Less transparent — memory retrieval happens automatically, so it is less obvious when or why particular memory was included | Consumer assistants, advisors, and multi-turn experiences where continuity should feel natural |
-   | Agent-driven (explicit `search_memory` tools) | Transparent and auditable — memory retrieval appears as an explicit, visible tool call | Relies on the agent deciding when to search; if it does not invoke the tool, relevant memory may not be retrieved | Scenarios where explicit and traceable memory retrieval is important, such as the safety-focused medical example demonstrated in the lab |
+   | Framework-managed (`context_providers=[memory]`) | Seamless memory context is automatically retrieved and provided to the agent with no manual memory calls in the conversation flow | Less transparent memory retrieval happens automatically, so it is less obvious when or why particular memory was included | Consumer assistants, advisors, and multi-turn experiences where continuity should feel natural |
+   | Agent-driven (explicit `search_memory` tools) | Transparent and auditable memory retrieval appears as an explicit, visible tool call | Relies on the agent deciding when to search; if it does not invoke the tool, relevant memory may not be retrieved | Scenarios where explicit and traceable memory retrieval is important, such as the safety-focused medical example demonstrated in the lab |
 
    > **Note:** The goal of this task is not to declare one pattern universally better. Instead, you are identifying when framework-managed context injection is helpful and when explicit retrieval offers better observability, safety, or control.
 
 ## Task 4: Long-Term Insight Extraction
 
-In this task, you will run the insight curation notebook and observe how repeated sessions evolve into durable user understanding — including how the system resolves outright contradictions between sessions instead of blindly accumulating them.
+In this task, you will run the insight curation notebook and observe how repeated sessions evolve into durable user understanding including how the system resolves outright contradictions between sessions instead of blindly accumulating them.
 
 1. In the Explorer pane, navigate to the  **notebooks (1)** folder and open the **06_insight_curation.ipynb (2)** notebook
 
    ![](./Images/ETS2311.png)
 
-1. Read the first markdown cell, **"Insight Curation Demo: Contradiction Resolution & Profile Evolution"**. It demonstrates how Insight Curation updates a user's long-term profile when preferences change over time—for example, evolving from avoiding stocks to preferring an aggressive investment strategy—instead of storing conflicting insights.
+1. Read the first markdown cell, **"Insight Curation Demo: Contradiction Resolution & Profile Evolution"**. It demonstrates how Insight Curation updates a user's long-term profile when preferences change over time. For example, evolving from avoiding stocks to preferring an aggressive investment strategy instead of storing conflicting insights.
 
    ![](./Images/ETS418.png)
 
@@ -230,10 +230,10 @@ In this task, you will run the insight curation notebook and observe how repeate
 
 1. Review the four memory patterns demonstrated across the lab and identify where each one was implemented:
 
-   - **Direct memory usage** — manual memory operations.
-   - **Framework-integrated memory** — automatic context management through the Agent Framework.
-   - **Agent-driven memory retrieval** — explicit memory searches initiated by the agent.
-   - **Long-term insight curation** — profile evolution and contradiction resolution through long-term synthesis.
+   - **Direct memory usage** - manual memory operations.
+   - **Framework-integrated memory** - automatic context management through the Agent Framework.
+   - **Agent-driven memory retrieval** - explicit memory searches initiated by the agent.
+   - **Long-term insight curation** - profile evolution and contradiction resolution through long-term synthesis.
 
 ## 🧾 Summary
 

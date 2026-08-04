@@ -28,15 +28,15 @@ In this task, you will learn what a **backend** means in Agent Memory, understan
 
 ### What is a backend?
 
-A **backend** is where Agent Memory physically stores its data — turns, summaries, session records, and insights. Think of it as the filing cabinet. The rest of the code (the agent, the memory API, the context injection) does not change when you swap the backend. You simply tell `AgentMemory` which type of database to use, and it handles the rest.
+A **backend** is where Agent Memory physically stores its data turns, summaries, session records, and insights. Think of it as the filing cabinet. The rest of the code (the agent, the memory API, the context injection) does not change when you swap the backend. You simply tell `AgentMemory` which type of database to use, and it handles the rest.
 
 The project supports four backend options:
 
 | Backend | Where data lives | Best for |
 |---|---|---|
 | `sqlite` | A `.db` file on your local machine | Learning, demos, local prototyping |
-| `cosmosdb` | Azure cloud — a managed JSON document database | Production agents, multi-session apps, cloud deployments |
-| `azure_ai_search` | Azure cloud — a search-optimized index | When semantic/vector retrieval quality is the top priority |
+| `cosmosdb` | Azure cloud a managed JSON document database | Production agents, multi-session apps, cloud deployments |
+| `azure_ai_search` | Azure cloud a search-optimized index | When semantic/vector retrieval quality is the top priority |
 | `postgresql` | A SQL database (local or cloud) | Teams that already use Postgres in their stack |
 
 > **Note:** In **Exercises 1 and 2**, you used **SQLite** as the local persistence backend. In this exercise, you switch to **Azure Cosmos DB** to explore cloud-backed memory persistence. Throughout this lab, the hands-on exercises focus on these two memory backends: **SQLite** for local storage and **Azure Cosmos DB** for cloud-based storage.
@@ -47,7 +47,7 @@ The project supports four backend options:
 |---|---|---|
 | Where it runs | On your machine, as a file | In the Azure cloud |
 | Who can access it | Only your local process | Any app, user, or service with credentials |
-| What happens when you restart | Data stays on your machine | Data stays in the cloud — always available |
+| What happens when you restart | Data stays on your machine | Data stays in the cloud always available |
 | Cost | Free (a local file) | Azure consumption-based pricing |
 | Best use | Prototyping | Production, multi-user, or deployed apps |
 
@@ -151,9 +151,9 @@ In this task, you will confirm that the data written in Task 2 actually exists i
 
 1. In the Data Explorer, expand the **agent_memory_db** database node. Inside **agent_memory_db**, expand each container to see what the demo created. You should find containers similar to the following:
 
-   - **interactions** — the raw conversation turns (Sarah's questions and the advisor's answers).
-   - **session_summaries** — the auto-generated summaries produced at the end of each session.
-   - **insights** — the durable facts extracted about Sarah (risk tolerance, income, retirement timeline, etc.).
+   - **interactions** - the raw conversation turns (Sarah's questions and the advisor's answers).
+   - **session_summaries** - the auto-generated summaries produced at the end of each session.
+   - **insights** - the durable facts extracted about Sarah (risk tolerance, income, retirement timeline, etc.).
 
       ![](./Images/ETS333.png)
 
@@ -161,17 +161,17 @@ In this task, you will confirm that the data written in Task 2 actually exists i
 
    ![](./Images/ETS335.png)
 
-   > **Note:** In Azure Cosmos DB for NoSQL, every piece of data is stored as a JSON document inside a **container** (similar to a table in SQL, but schema-free). Each document has a unique `id` and a `partition key` — in this project, the partition key is the `user_id`, which means all of Sarah's data is grouped together for efficient retrieval.
+   > **Note:** In Azure Cosmos DB for NoSQL, every piece of data is stored as a JSON document inside a **container** (similar to a table in SQL, but schema-free). Each document has a unique `id` and a `partition key` in this project, the partition key is the `user_id`, which means all of Sarah's data is grouped together for efficient retrieval.
 
 1. Click on the **insights (1)** container → **Items (2)** and open one of the insight documents **(3)**. Confirm it contains a fact extracted from the conversation.
 
    ![](./Images/ETS336.png)
 
-1. Now verify **cross-run persistence** — this is the most important part. Return to Visual Studio Code, and **restart the notebook kernel** by clicking the **Restart** button in the notebook toolbar.
+1. Now verify **cross-run persistence**, this is the most important part. Return to Visual Studio Code, and **restart the notebook kernel** by clicking the **Restart** button in the notebook toolbar.
 
    ![](./Images/ETS337.png)
 
-1. Run only the first two cells again (**Cell 1 — imports and Environment, Cell 2 — tools and sessions**) to reinitialize the environment. Do **not** run the **Cell 3: Run Three Sessions Demo with CosmosDB Memory**.
+1. Run only the first two cells again (**Cell 1: Setup, Imports & Environment Configuration and Cell 2: Tools, Session Runner & CosmosDB Memory Setup**) to reinitialize the environment. Do **not** run the **Cell 3: Run Three Sessions Demo with CosmosDB Memory**.
 
    ![](./Images/ETS351.png)
 
@@ -192,19 +192,19 @@ In this task, you will confirm that the data written in Task 2 actually exists i
 
 1. Review the output **(3)** and verify that it returns Sarah's **moderate-to-high risk tolerance** from **Session 1**. This confirms that Agent Memory successfully retrieves persisted data from **Azure Cosmos DB**, even after starting a new kernel with no in-memory conversation state.
 
-   > **Note:** This is the key difference from SQLite: with SQLite, persistence is local to the machine. With Cosmos DB, a completely separate application running anywhere — a web API, a mobile app, another engineer's laptop — would get the same answer from the same data.
+   > **Note:** This is the key difference from SQLite: with SQLite, persistence is local to the machine. With Cosmos DB, a completely separate application running anywhere a web API, a mobile app, another engineer's laptop would get the same answer from the same data.
 
 ## Task 4: Run Itemized Insights with Cosmos DB
 
-In this task, you will run the `09_itemized_insights_cosmos.ipynb` notebook. This notebook introduces a more advanced memory concept: **bounded long-term memory** — a system where the agent can only keep a fixed number of insights at any time, and older or less-used insights are automatically removed to make room for newer, more relevant ones.
+In this task, you will run the `09_itemized_insights_cosmos.ipynb` notebook. This notebook introduces a more advanced memory concept: **bounded long-term memory** a system where the agent can only keep a fixed number of insights at any time, and older or less-used insights are automatically removed to make room for newer, more relevant ones.
 
 ### Why bounded memory?
 
-Imagine an agent that has been talking to a user for two years. If every insight from every session accumulates forever, the agent's memory grows without limit — eventually injecting so much context into every prompt that it becomes slow, expensive, and noisy. Bounded memory solves this by applying three scoring rules to decide which insights to keep:
+Imagine an agent that has been talking to a user for two years. If every insight from every session accumulates forever, the agent's memory grows without limit eventually injecting so much context into every prompt that it becomes slow, expensive, and noisy. Bounded memory solves this by applying three scoring rules to decide which insights to keep:
 
-- **Recency** — a new insight gets a temporary priority boost so it is not immediately dropped.
-- **Frequency** — an insight that is referenced again in later sessions gets stronger (its `access_count` rises).
-- **Forgetting** — an insight that is never referenced again gradually decays and is eventually pruned.
+- **Recency** - a new insight gets a temporary priority boost so it is not immediately dropped.
+- **Frequency** - an insight that is referenced again in later sessions gets stronger (its `access_count` rises).
+- **Forgetting** - an insight that is never referenced again gradually decays and is eventually pruned.
 
 This notebook simulates six months of client sessions, capped at `MAX_INSIGHTS = 5`, and shows how the insight table evolves over time.
 
@@ -265,9 +265,9 @@ Review the following table.
 
 | Backend | Where data lives | Best fit | Strength | Limitation |
 |---|---|---|---|---|
-| **SQLite** | A `.db` file on your local machine | Local dev, demos, single-machine prototyping | Zero configuration — works immediately with no credentials | Data is tied to one machine; no other app or user can access it |
-| **Cosmos DB** | Azure cloud — managed JSON document store | Production agents, multi-session apps, cloud deployments | Durable cloud persistence, globally available, JSON-native, serverless option | Requires Azure credentials and incurs cloud cost |
-| **Azure AI Search** | Azure cloud — search-optimized index | When semantic/vector retrieval quality is the priority | Best-in-class hybrid (keyword + vector) retrieval | Higher setup complexity; less suited as a general-purpose store |
+| **SQLite** | A `.db` file on your local machine | Local dev, demos, single-machine prototyping | Zero configuration works immediately with no credentials | Data is tied to one machine; no other app or user can access it |
+| **Cosmos DB** | Azure cloud managed JSON document store | Production agents, multi-session apps, cloud deployments | Durable cloud persistence, globally available, JSON-native, serverless option | Requires Azure credentials and incurs cloud cost |
+| **Azure AI Search** | Azure cloud  search-optimized index | When semantic/vector retrieval quality is the priority | Best-in-class hybrid (keyword + vector) retrieval | Higher setup complexity; less suited as a general-purpose store |
 | **PostgreSQL** | SQL database (local or cloud-hosted) | Teams already standardizing on relational storage | Familiar SQL tooling, strong operational ecosystem | Requires schema management; less natural for JSON/vector workloads |
 
 ## 🧾 Summary

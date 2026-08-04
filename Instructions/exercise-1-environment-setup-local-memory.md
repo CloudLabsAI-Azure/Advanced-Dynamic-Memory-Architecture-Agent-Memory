@@ -85,7 +85,7 @@ In this task, you will verify that the required development tools are available,
 
 In this task, you will navigate to the pre-created Azure OpenAI resource, open it in the Azure portal, copy the endpoint and API key, and paste them into the project's `.env` file.
 
-> **Note:** The Azure OpenAI resource and its model deployments have already been created in this lab environment — you do not need to create any new resources.
+> **Note:** The Azure OpenAI resource and its model deployments have already been created in this lab environment. You do not need to create any new resources.
 
 1. On the **Microsoft Edge** browser, go to **Azure portal**. In the search bar at the top, search for **Azure OpenAI (1)**, and select **Azure OpenAI (2)** from the **Services** section.
 
@@ -232,9 +232,9 @@ In this task, you will adjust the key memory configuration parameters in the not
 
    ![](./Images/ETS1320.png)
 
-   > **Note:** Restarting is required — the memory object and configuration are created at cell execution time, so edits do not take effect on an already-running kernel state.
+   > **Note:** Restarting is required, the memory object and configuration are created at cell execution time, so edits do not take effect on an already-running kernel state.
 
-1. Observe in the **Step 3** output how **summarization triggers earlier** than in the previous run — the buffer now fills after only 3 turns, so pruning happens much sooner in the 8-turn conversation, and only the last 2 turns remain verbatim.
+1. Observe in the **Step 3** output how **summarization triggers earlier** than in the previous run, the buffer now fills after only 3 turns, so pruning happens much sooner in the 8-turn conversation, and only the last 2 turns remain verbatim.
 
    ![](./Images/ETS151.png)
 

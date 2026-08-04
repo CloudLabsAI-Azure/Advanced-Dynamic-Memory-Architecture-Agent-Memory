@@ -1,26 +1,26 @@
-# Advanced Dynamic Memory Architecture — Agent Memory
+# Agent Memory: Build Long-Term Memory for AI Agents with Azure Cosmos DB and Microsoft Agent Framework
 
 ### Lab Duration: 8 Hours
 
 ## 📘 Lab Scenario
 
-Contoso AI Solutions is building the next generation of its customer-facing intelligent assistant platform. The current assistants lose all context at the end of every conversation — users must re-introduce themselves, re-explain their preferences, and re-state their goals in every new session. This leads to poor user experience, longer interaction times, and lower customer satisfaction scores.
+Contoso AI Solutions is building the next generation of its customer-facing intelligent assistant platform. The current assistants lose all context at the end of every conversation, users must re-introduce themselves, re-explain their preferences, and re-state their goals in every new session. This leads to poor user experience, longer interaction times, and lower customer satisfaction scores.
 
-To solve this, the engineering team has been tasked with integrating **Agent Memory** — a persistent, searchable memory layer that allows AI agents to remember users across sessions, extract long-term insights from conversations, and deliver contextually aware responses from the very first message of every new conversation.
+To solve this, the engineering team has been tasked with integrating **Agent Memory**. A persistent, searchable memory layer that allows AI agents to remember users across sessions, extract long-term insights from conversations, and deliver contextually aware responses from the very first message of every new conversation.
 
 As an **AI Engineer at Contoso**, your role is to build and validate this memory-enabled agent platform. You will work with the Agent Memory framework built on Azure OpenAI, configure local and cloud-backed persistence backends, integrate memory into the Microsoft Agent Framework, and ultimately build and validate a memory-enabled agent for a real-world scenario.
 
-By the end of this lab, you will demonstrate that Contoso's assistants can now remember every user — across sessions, across weeks, and across the full history of every relationship — delivering the kind of personalised, contextually aware experience that turns a generic chatbot into a trusted assistant.
+By the end of this lab, you will demonstrate that Contoso's assistants can now remember every user across sessions, across weeks, and across the full history of every relationship delivering the kind of personalised, contextually aware experience that turns a generic chatbot into a trusted assistant.
 
 ## 📖 Lab Overview
 
-The **Advanced Dynamic Memory Architecture — Agent Memory** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations. Participants will learn to integrate the Agent Memory framework with Azure OpenAI, explore multiple backend persistence options (SQLite, Cosmos DB), and build and validate a memory-enabled agent application.
+The **Agent Memory: Build Long-Term Memory for AI Agents with Azure Cosmos DB and Microsoft Agent Framework** workshop is designed to teach developers how to build intelligent agents with persistent, searchable memory across multi-session conversations. Participants will learn to integrate the Agent Memory framework with Azure OpenAI, explore multiple backend persistence options (SQLite, Cosmos DB), and build and validate a memory-enabled agent application.
 
 The lab begins with environment setup and local memory exploration using a zero-configuration SQLite backend, giving participants a concrete understanding of how `AgentMemory` stores turns, compresses older content into summaries, and recalls facts across sessions. Participants then integrate memory into the Microsoft Agent Framework as a context provider, observing how the system automatically injects prior knowledge into every agent response without any manual retrieval code.
 
-As the lab progresses, participants move from local to cloud-scale persistence by connecting `AgentMemory` to Azure Cosmos DB — verifying that memory survives full application restarts and is accessible from anywhere. They explore advanced curation strategies including bounded itemized memory, which keeps the insight pool compact and relevant by scoring and pruning older facts, and compare it against free-form synthesis that resolves contradictions across sessions.
+As the lab progresses, participants move from local to cloud-scale persistence by connecting `AgentMemory` to Azure Cosmos DB verifying that memory survives full application restarts and is accessible from anywhere. They explore advanced curation strategies including bounded itemized memory, which keeps the insight pool compact and relevant by scoring and pruning older facts, and compare it against free-form synthesis that resolves contradictions across sessions.
 
-The final exercises bring everything together — participants expose memory as a live FastAPI service, visualize the system through a real-time Streamlit dashboard, and conclude with a capstone where they build their own memory-enabled agent for a scenario of their choice, proving end-to-end cross-session recall through an automated verification report.
+The final exercises bring everything together participants expose memory as a live FastAPI service, visualize the system through a real-time Streamlit dashboard, and conclude with a capstone where they build their own memory-enabled agent for a scenario of their choice, proving end-to-end cross-session recall through an automated verification report.
 
 ## 🎯 Lab Objectives
 
@@ -45,8 +45,8 @@ Participants should have:
 - **Python 3.12 or later** installed on the lab VM.
 - **Visual Studio Code** with the Python and Jupyter extensions.
 - **Basic Python knowledge** working with environment variables, and running scripts from the command line using `uv`.
-- **Familiarity with Azure OpenAI** — basic understanding of how Azure OpenAI works and how to navigate the Azure Portal to locate resources and credentials.
-- No prior Agent Memory experience required — the lab introduces all framework concepts from scratch.
+- **Familiarity with Azure OpenAI** basic understanding of how Azure OpenAI works and how to navigate the Azure Portal to locate resources and credentials.
+- No prior Agent Memory experience required the lab introduces all framework concepts from scratch.
 
 ## 🏗️ Architecture
 
@@ -76,7 +76,7 @@ This architecture demonstrates an end-to-end memory-enabled AI application built
 
 # 🚀 Getting Started with Lab
 
-Welcome to the Advanced Dynamic Memory Architecture — Agent Memory Workshop!. Let's begin by making the most of this experience:
+Welcome to the Agent Memory: Build Long-Term Memory for AI Agents with Azure Cosmos DB and Microsoft Agent Framework Workshop!. Let's begin by making the most of this experience:
 
 ## Accessing Your Lab Environment
 
