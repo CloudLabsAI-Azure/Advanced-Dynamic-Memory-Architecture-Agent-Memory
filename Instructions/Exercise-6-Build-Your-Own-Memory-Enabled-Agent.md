@@ -160,9 +160,9 @@ In this task, you will fill in your Session 1 conversation turns and run them th
        ('user', 'Hi, my name is Sam. I have a Dell XPS 15 laptop running Windows 11.'),
        ('assistant', 'Thanks Sam! I have noted your Dell XPS 15 on Windows 11. How can I help?'),
        ('user', 'My Wi-Fi keeps dropping every 30 minutes. It started after last week\'s Windows update.'),
-       ('assistant', 'I see — intermittent Wi-Fi after a Windows update is often a driver issue. Let me check the common fixes for Dell XPS 15 on Windows 11.'),
+       ('assistant', 'I see intermittent Wi-Fi after a Windows update is often a driver issue. Let me check the common fixes for Dell XPS 15 on Windows 11.'),
        ('user', 'Also I use this laptop for video editing so I cannot afford long downtime.'),
-       ('assistant', 'Understood — I will prioritise minimal-downtime solutions given your video editing workflow.'),
+       ('assistant', 'Understood - I will prioritise minimal-downtime solutions given your video editing workflow.'),
    ]
    ```
    </details>
@@ -174,9 +174,9 @@ In this task, you will fill in your Session 1 conversation turns and run them th
    ```python
    SESSION_1_TURNS = [
        ('user', 'Hi! I\'m Maya. I always fly business class and prefer window seats.'),
-       ('assistant', 'Welcome Maya! Noted — business class, window seat preference.'),
+       ('assistant', 'Welcome Maya! Noted - business class, window seat preference.'),
        ('user', 'I\'m vegetarian and I have a severe nut allergy, so food options matter a lot.'),
-       ('assistant', 'Important — vegetarian with severe nut allergy. I will flag this for every itinerary.'),
+       ('assistant', 'Important - vegetarian with severe nut allergy. I will flag this for every itinerary.'),
        ('user', 'I visited Tokyo last year and would love somewhere equally cultural this time.'),
        ('assistant', 'Cultural destinations, similar to Tokyo. I will keep that in mind for your next trip recommendation.'),
    ]
@@ -190,11 +190,11 @@ In this task, you will fill in your Session 1 conversation turns and run them th
    ```python
    SESSION_1_TURNS = [
        ('user', 'Hi coach! I\'m Jordan and I\'m learning Python. I\'m a complete beginner.'),
-       ('assistant', 'Great to meet you Jordan! Starting Python from scratch — noted.'),
+       ('assistant', 'Great to meet you Jordan! Starting Python from scratch - noted.'),
        ('user', 'I just finished the basics: variables, loops, and functions. I scored 85 on the quiz.'),
-       ('assistant', 'Excellent — 85 on the fundamentals quiz. You have a solid foundation.'),
+       ('assistant', 'Excellent - 85 on the fundamentals quiz. You have a solid foundation.'),
        ('user', 'I learn best with real examples and short sessions, not long theory.'),
-       ('assistant', 'Practical examples, short sessions — I will structure all future coaching accordingly.'),
+       ('assistant', 'Practical examples, short sessions - I will structure all future coaching accordingly.'),
    ]
    ```
    </details>
@@ -227,7 +227,7 @@ This is different from the `auto_enrich_context=True` setting already in Cell 3:
 1. In Cell 6, find the `# YOUR CHOICE:` section specifically the `TEST_QUERY` line:
 
    ```python
-   TEST_QUERY = 'REPLACE ME — enter a search query relevant to your scenario'
+   TEST_QUERY = 'REPLACE ME - enter a search query relevant to your scenario'
    ```
 
    ![](./Images/ETS631.png)
