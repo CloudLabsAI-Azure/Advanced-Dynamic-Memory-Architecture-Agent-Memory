@@ -216,7 +216,7 @@ In this task, you will observe how Agent Memory retrieves information from previ
 
    ![](./Images/ETS1318.png)
 
-1. Save the changes by pressing **CTRL + S**after running all the cells in the **01_basic_memory.ipynb**.
+1. Save the changes by pressing **CTRL + S** after running all the cells in the **01_basic_memory.ipynb**.
 
 > **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
 > - Hit the Inline Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
