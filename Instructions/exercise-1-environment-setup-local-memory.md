@@ -216,6 +216,15 @@ In this task, you will observe how Agent Memory retrieves information from previ
 
    ![](./Images/ETS1318.png)
 
+1. Save the changes by pressing **CTRL + S**after running all the cells in the **01_basic_memory.ipynb**.
+
+> **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
+> - Hit the Inline Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at cloudlabs-support@spektrasystems.com. We are available 24/7 to help.
+ 
+<validation step="80e72afd-12bf-417b-affd-1bdabdb40a31" />
+
 ## Task 5: Explore Memory Configuration Tuning (Optional)
 
 In this task, you will adjust the key memory configuration parameters in the notebook and re-run it to observe how behavior changes with different settings.

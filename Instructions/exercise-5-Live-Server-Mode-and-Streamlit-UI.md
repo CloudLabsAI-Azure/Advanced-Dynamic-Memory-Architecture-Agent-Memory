@@ -15,7 +15,7 @@ In this exercise, you will deploy and interact with an **Agent Memory server** t
 ## 🎯 Objectives
 
    - Task 1: Configure and Start the Memory Server  
-   - Task 2: Interactive Terminal Chat 
+   - Task 2: Run the Scripted Terminal Demo 
    - Task 3: Launch the Streamlit Live UI 
    - Task 4: Verify cross-session recall
    - Task 5: Test Interactive Memory across Clients 
@@ -61,7 +61,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
    
    ![](./Images/ETS514.png)
 
-## Task 2: Interactive Terminal Chat
+## Task 2: Run the Scripted Terminal Demo
 
 In this task, you will run the scripted demo a fixed 5-turn automatic conversation and observe the complete memory lifecycle: session start → turns stored → session end → insights extracted.
 
@@ -303,6 +303,13 @@ This is the exercise's hands-on capstone. You will run the terminal client in **
    | Streamlit showed 🟢 Server Online throughout | Both clients share one server; neither has its own memory |
 
    **One server. Multiple clients. Shared memory. This is the architecture.**
+
+> **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
+> - Hit the Inline Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at cloudlabs-support@spektrasystems.com. We are available 24/7 to help.
+ 
+<validation step="987a16da-e353-4a0e-9434-35ba4a131cb0" />
 
 ## 🧾 Summary
 

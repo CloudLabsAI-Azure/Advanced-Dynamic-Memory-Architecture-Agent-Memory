@@ -131,6 +131,13 @@ In this task, you will open the **`04_cosmosdb.ipynb`** notebook and execute its
 
    > **Note:** If the cell fails with a `CosmosDB connection error` or `authentication error`, verify your `COSMOS_ENDPOINT` and `COSMOS_KEY` values in `.env`, save the file, restart the kernel, and re-run all cells from the top.
 
+> **Congratulations** on completing the task! Now, it's time to validate it. Here are the steps:
+> - Hit the Inline Validate button for the corresponding task. If you receive a success message, you can proceed to the next task.
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at cloudlabs-support@spektrasystems.com. We are available 24/7 to help.
+ 
+<validation step="98bd516c-1e42-45a7-9fe4-ec8c58bafe5d" />
+
 ## Task 3: Verify Data Persisted in Cosmos DB
 
 In this task, you will confirm that the data written in Task 2 actually exists in your Azure Cosmos DB account by browsing the containers in Data Explorer, inspecting a stored JSON item, and verifying that memory survives a full kernel restart.
