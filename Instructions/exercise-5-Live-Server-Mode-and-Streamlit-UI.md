@@ -15,7 +15,7 @@ In this exercise, you will deploy and interact with an **Agent Memory server** t
 ## 🎯 Objectives
 
    - Task 1: Configure and Start the Memory Server  
-   - Task 2: Run the Scripted Terminal Demo 
+   - Task 2: Run the Server Mode Terminal Demo 
    - Task 3: Launch the Streamlit Live UI 
    - Task 4: Verify cross-session recall
    - Task 5: Test Interactive Memory across Clients 
@@ -61,7 +61,7 @@ In the previous exercises, the notebooks interacted directly with **AgentMemory*
    
    ![](./Images/ETS514.png)
 
-## Task 2: Run the Scripted Terminal Demo
+## Task 2: Run the Server Mode Terminal Demo 
 
 In this task, you will run the scripted demo a fixed 5-turn automatic conversation and observe the complete memory lifecycle: session start → turns stored → session end → insights extracted.
 
